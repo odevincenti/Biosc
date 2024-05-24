@@ -1,32 +1,42 @@
-/**
- * Blink
- *
- * Turns on an LED on for one second,
- * then off for one second, repeatedly.
- */
-
 #include "Arduino.h"
+#include "serial_handler.h"
 
-// Set LED_BUILTIN if it is not defined by Arduino framework
-#define LED_BUILTIN 2
+// #define LED_BUILTIN 2
+#define DEBUG
+
+char receivedChars[MAX_CHARS];
+boolean newData = false;
+bool blink = false;
 
 void setup()
 {
-  // initialize LED digital pin as an output.
   pinMode(LED_BUILTIN, OUTPUT);
+  	Serial.begin(BAUD_RATE);    // open serial port
+	Serial.write("Ready!\n");	
 }
 
 void loop()
 {
-  // turn the LED on (HIGH is the voltage level)
-  digitalWrite(LED_BUILTIN, HIGH);
+    newData = recvWithStartEndMarkers(&receivedChars[0], &newData);
+    if (newData || blink) {
+#ifdef DEBUG
+		Serial.println(receivedChars);
+#endif
+        if (receivedChars[0] == 'H'){
+            blink = false;
+            digitalWrite(LED_BUILTIN, HIGH);
+        } else if (receivedChars[0] == 'L'){
+            blink = false;
+            digitalWrite(LED_BUILTIN, LOW);
+        } else if (blink || receivedChars[0] == 'B'){
+            blink = true;
+            digitalWrite(LED_BUILTIN, HIGH);
+            delay(1000);
+            digitalWrite(LED_BUILTIN, LOW);
+            delay(1000);
+        }
 
-  // wait for a second
-  delay(1000);
+		newData = false;
 
-  // turn the LED off by making the voltage LOW
-  digitalWrite(LED_BUILTIN, LOW);
-
-   // wait for a second
-  delay(1000);
+    }
 }
