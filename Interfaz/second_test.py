@@ -34,7 +34,7 @@ class SerialReader(threading.Thread):
         self.serial_port.close()
 
 class PlotterApp(QtWidgets.QMainWindow):
-    def __init__(self, port='COM3', baud_rate=115200):
+    def __init__(self, port='COM9', baud_rate=115200):
         super().__init__()
         self.initUI()
         self.serial_reader = SerialReader(port, baud_rate)
