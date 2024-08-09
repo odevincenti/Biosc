@@ -12,7 +12,11 @@ void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);
   	Serial.begin(BAUD_RATE);    // open serial port
-	Serial.write("Ready!\n");	
+    double signal[3] = {0.5, 0.65, 0.88};
+    int i;
+    for(i = 0; i < 3; i++){
+	    Serial.write("%d", signal[i]);	
+    }
 }
 
 void loop()
