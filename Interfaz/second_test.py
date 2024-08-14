@@ -64,5 +64,5 @@ class PlotterApp(QtWidgets.QMainWindow):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    mainWindow = PlotterApp(port='COM9', baud_rate=115200)
+    mainWindow = PlotterApp(port='COM3', baud_rate=115200)
     sys.exit(app.exec_())
