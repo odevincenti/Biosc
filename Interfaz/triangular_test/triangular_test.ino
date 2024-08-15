@@ -17,7 +17,6 @@ unsigned int sample_rate = 1e6;
 
 bool bufferFlag = false;
 bool sendFlag = false;
-static unsigned long counter = 0;
 static unsigned int pos = 0;
 
 void ARDUINO_ISR_ATTR onTimer() {
@@ -53,7 +52,6 @@ void loop() {
   // If Timer has fired (this is basically the content of the onTimer call)
   if (xSemaphoreTake(timerSemaphore, 0) == pdTRUE) {
     // Every 500 ms, blink led
-    // Serial.println(lastIsrAt);
     if (lastIsrAt % 500 == 0){
       level = !level;
       digitalWrite(LED_BUILTIN, level);
@@ -61,8 +59,8 @@ void loop() {
 
     // Update wave value
     if (increasing) {
-        waveValue++;
-      if (waveValue >= 256) {
+      waveValue++;
+      if (waveValue >= 255) {
         increasing = false;
       }
     } 
@@ -83,7 +81,6 @@ void loop() {
       bufferFlag = true;
       pos = 0;
     }
-    counter++;
 
   // Write to serial
     if (Serial.available() > 0){
@@ -94,10 +91,7 @@ void loop() {
       char data = Serial.read();
       if (data == 's'){ 
         for (unsigned int i = 0; i < BUFFER_SIZE; i++){
-          int high = buffer_send[i];
-          // int low = buffer_send[i] % 256;
-          Serial.println(high);
-          // Serial.write(low);
+          Serial.write(buffer_send[i]);
         }
         bufferFlag = false;
         sendFlag = false;

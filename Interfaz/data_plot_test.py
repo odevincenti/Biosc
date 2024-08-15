@@ -58,17 +58,9 @@ class Oscilloscope(QtWidgets.QMainWindow):
 
         if self.serial.canReadLine():
             try:
-                raw_data = self.serial.read(BUFFER_SIZE)  # Read BUFFER_SIZE samples (assuming 2 bytes per sample)
-                print(raw_data)
-                # print(f"{type(raw_data)=}")
-                # print(f"{len(raw_data)=}")
-                data = [int(sample) for sample in raw_data.split('\n')]
-                # print(data)
-                # print(f"{type(data)=}")
-                # print(f"{len(data)=}")
-                # data = [int.from_bytes(raw_data[i], 'big') for i in range(BUFFER_SIZE)]
+                data = self.serial.read(BUFFER_SIZE)
                 self.data.extend(data)
-                if len(self.data) > DATA_LEN:  # Limit the data length for performance
+                if len(self.data) > DATA_LEN:
                     self.data = self.data[-DATA_LEN:]
             except ValueError:
                 pass
