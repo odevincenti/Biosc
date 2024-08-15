@@ -94,7 +94,7 @@ void loop() {
       char data = Serial.read();
       if (data == 's'){ 
         for (unsigned int i = 0; i < BUFFER_SIZE; i++){
-          int high = buffer_send[i] / 256;
+          int high = buffer_send[i];
           // int low = buffer_send[i] % 256;
           Serial.println(high);
           // Serial.write(low);
