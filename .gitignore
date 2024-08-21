@@ -1,5 +1,6 @@
 Testing/ESP32 Tests/Esp32_oscilloscope/*
 **/.pio/*
 **/.vscode/*
+/Interfaz/.vscode/
 *.log
 *.raw
