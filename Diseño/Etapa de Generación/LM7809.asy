@@ -1,0 +1,17 @@
+Version 4
+SymbolType BLOCK
+RECTANGLE Normal -32 -48 160 64
+WINDOW 0 128 -48 Bottom 2
+WINDOW 3 64 -48 Top 2
+SYMATTR Prefix X
+SYMATTR Value LM7809
+SYMATTR ModelFile C:\Users\User\Repos\Biosc\Diseño\Etapa de Generación\7809.txt
+PIN -32 0 LEFT 8
+PINATTR PinName IN
+PINATTR SpiceOrder 1
+PIN 64 64 BOTTOM 8
+PINATTR PinName REF
+PINATTR SpiceOrder 2
+PIN 160 0 RIGHT 8
+PINATTR PinName OUT
+PINATTR SpiceOrder 3
