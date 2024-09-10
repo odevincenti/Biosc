@@ -4,3 +4,7 @@ Testing/ESP32 Tests/Esp32_oscilloscope/*
 /Interfaz/.vscode/
 *.log
 *.raw
+.idea/
+Interfaz/__pycache__
+
+
