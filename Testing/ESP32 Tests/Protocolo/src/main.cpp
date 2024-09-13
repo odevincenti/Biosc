@@ -48,7 +48,7 @@ void send_signal(){
             msg = msg + "]}";
         }
     }
-    msg = msg + "]-\0";
+    msg = msg + "]-\n";
     Serial.print(msg);
 }
 
