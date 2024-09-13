@@ -1,0 +1,6 @@
+PyQt6
+pyqt6-tools
+pyqtgraph
+pyserial
+numpy
+scipy
