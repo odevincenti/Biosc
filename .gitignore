@@ -6,5 +6,6 @@ Testing/ESP32 Tests/Esp32_oscilloscope/*
 *.raw
 .idea/
 Interfaz/__pycache__
-
+*.__pycache__
+*.pyc
 
