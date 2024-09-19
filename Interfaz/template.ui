@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Bioscope</class>
+ <widget class="QMainWindow" name="Bioscope">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Bioscope</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="SignalPlotter" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>110</y>
+      <width>801</width>
+      <height>461</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QFrame" name="FrameControl">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>791</width>
+      <height>114</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(36, 31, 49);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Shadow::Raised</enum>
+    </property>
+    <widget class="QCheckBox" name="checkCH1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>92</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>CH1</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkCH2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>92</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>CH2</string>
+     </property>
+    </widget>
+    <widget class="QSlider" name="horizontalSlider">
+     <property name="geometry">
+      <rect>
+       <x>590</x>
+       <y>10</y>
+       <width>160</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="QLCDNumber" name="lcdNumber">
+     <property name="geometry">
+      <rect>
+       <x>640</x>
+       <y>50</y>
+       <width>101</width>
+       <height>41</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QDial" name="dial">
+     <property name="geometry">
+      <rect>
+       <x>580</x>
+       <y>40</y>
+       <width>50</width>
+       <height>64</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_as"/>
+   </widget>
+   <addaction name="menuFile"/>
+  </widget>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionSave_as">
+   <property name="text">
+    <string>Save as</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SignalPlotter</class>
+   <extends>QWidget</extends>
+   <header location="global">custom_widgets</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

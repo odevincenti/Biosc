@@ -1,5 +1,7 @@
+# The code is a simple digital oscilloscope that reads data from a serial port and plots it in real-time.
+
 import sys
-from PyQt6 import QtWidgets, QtCore, QtSerialPort
+from PySide6 import QtWidgets, QtCore, QtSerialPort
 import pyqtgraph as pg
 
 BAUD_RATE = 115200
@@ -8,13 +10,13 @@ BUFFER_SIZE = 100
 REFRESH_RATE = 10  # Refresh rate in milliseconds
 
 class SerialReader(QtCore.QObject):
-    data_received = QtCore.pyqtSignal(bytes)
+    data_received = QtCore.Signal(bytes)
 
     def __init__(self, serial_port):
         super().__init__()
         self.serial = serial_port
 
-    @QtCore.pyqtSlot()
+    @QtCore.Slot()
     def read_data(self):
         if self.serial.canReadLine():
             data = self.serial.read(BUFFER_SIZE)
@@ -23,8 +25,8 @@ class SerialReader(QtCore.QObject):
 
 
 class SignalPlotter(pg.PlotWidget):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.setRange(xRange=(0, DATA_LEN), disableAutoRange=True)
 
     def wheelEvent(self, event):
@@ -67,7 +69,7 @@ class Oscilloscope(QtWidgets.QMainWindow):
             self.serial = QtSerialPort.QSerialPort()
             self.serial.setPortName(port_name)
             self.serial.setBaudRate(BAUD_RATE)
-            if not self.serial.open(QtCore.QIODeviceBase.OpenModeFlag.ReadWrite):
+            if not self.serial.open(QtCore.QIODeviceBase.ReadWrite):
                 QtWidgets.QMessageBox.critical(self, 'Serial Port Error', f"Can't open {port_name}")
                 self.close()
                 return
@@ -101,7 +103,7 @@ class Oscilloscope(QtWidgets.QMainWindow):
         x_range = vb.viewRange()[0]  # First element is the x-axis range
         return x_range
 
-    @QtCore.pyqtSlot(bytes)
+    @QtCore.Slot(bytes)
     def process_serial_data(self, data):
         self.data.extend(data)
         x_range = self.get_x_range()
