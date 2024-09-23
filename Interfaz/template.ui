@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1002</width>
+    <width>1003</width>
     <height>650</height>
    </rect>
   </property>
@@ -17,24 +17,26 @@
    <widget class="SignalPlotter" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>100</y>
-      <width>811</width>
+      <x>40</x>
+      <y>90</y>
+      <width>771</width>
       <height>521</height>
      </rect>
     </property>
    </widget>
-   <widget class="QFrame" name="FrameControl">
+   <widget class="QFrame" name="FrameControlScope">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>1001</width>
+      <width>521</width>
       <height>91</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true"/>
+     <string notr="true">background-color: rgb(222, 221, 218);
+alternate-background-color: rgb(119, 118, 123);
+color: rgb(0, 0, 0);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::Shape::StyledPanel</enum>
@@ -145,7 +147,7 @@
      <property name="geometry">
       <rect>
        <x>250</x>
-       <y>40</y>
+       <y>50</y>
        <width>151</width>
        <height>31</height>
       </rect>
@@ -156,6 +158,70 @@
      <property name="icon">
       <iconset theme="QIcon::ThemeIcon::ZoomFitBest"/>
      </property>
+    </widget>
+    <widget class="QComboBox" name="comboTriggerSet">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>10</y>
+       <width>86</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>Rise</string>
+      </property>
+      <property name="icon">
+       <iconset theme="QIcon::ThemeIcon::GoUp"/>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Fall</string>
+      </property>
+      <property name="icon">
+       <iconset theme="QIcon::ThemeIcon::GoDown"/>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Both</string>
+      </property>
+      <property name="icon">
+       <iconset theme="QIcon::ThemeIcon::MediaPlaylistShuffle"/>
+      </property>
+     </item>
+    </widget>
+    <widget class="QComboBox" name="comboTriggerCH">
+     <property name="geometry">
+      <rect>
+       <x>410</x>
+       <y>50</y>
+       <width>86</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>CH1</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>CH2</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>CH3</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>CH4</string>
+      </property>
+     </item>
     </widget>
    </widget>
    <widget class="QFrame" name="frameCH1">
@@ -168,7 +234,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-color: rgb(129, 61, 156);</string>
+     <string notr="true">border-color: rgb(237, 51, 59);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::Shape::StyledPanel</enum>
@@ -181,15 +247,19 @@
       <rect>
        <x>40</x>
        <y>10</y>
-       <width>91</width>
-       <height>24</height>
+       <width>88</width>
+       <height>19</height>
       </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(246, 97, 81);
+color: rgb(0, 0, 0);</string>
      </property>
      <property name="text">
       <string>Channel 1</string>
      </property>
     </widget>
-    <widget class="QLabel" name="labelCH1off">
+    <widget class="QLabel" name="labelCH1offset">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -202,7 +272,7 @@
       <string>Offset:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="labelCH1scale">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -218,14 +288,23 @@
     <widget class="QSpinBox" name="spinCH1offset">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>60</x>
        <y>40</y>
-       <width>71</width>
+       <width>91</width>
        <height>27</height>
       </rect>
      </property>
      <property name="specialValueText">
+      <string/>
+     </property>
+     <property name="suffix">
       <string>mV</string>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
      </property>
      <property name="singleStep">
       <number>5</number>
@@ -234,14 +313,20 @@
     <widget class="QSpinBox" name="spinCH1scale">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>60</x>
        <y>80</y>
-       <width>71</width>
+       <width>91</width>
        <height>27</height>
       </rect>
      </property>
      <property name="specialValueText">
+      <string/>
+     </property>
+     <property name="suffix">
       <string>mV/div</string>
+     </property>
+     <property name="minimum">
+      <number>1</number>
      </property>
     </widget>
    </widget>
@@ -255,7 +340,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-color: rgb(129, 61, 156);</string>
+     <string notr="true">border-color: rgb(143, 240, 164);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::Shape::StyledPanel</enum>
@@ -263,7 +348,7 @@
     <property name="frameShadow">
      <enum>QFrame::Shadow::Raised</enum>
     </property>
-    <widget class="QCheckBox" name="checkCH1_2">
+    <widget class="QCheckBox" name="checkCH2">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -272,11 +357,15 @@
        <height>24</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(249, 240, 107);
+color: rgb(0, 0, 0);</string>
+     </property>
      <property name="text">
       <string>Channel 2</string>
      </property>
     </widget>
-    <widget class="QLabel" name="labelCH1off_2">
+    <widget class="QLabel" name="labelCH2offset">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -289,7 +378,7 @@
       <string>Offset:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="labelCH2scale">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -302,37 +391,52 @@
       <string>Scale:</string>
      </property>
     </widget>
-    <widget class="QSpinBox" name="spinCH1offset_2">
+    <widget class="QSpinBox" name="spinCH2offset">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>60</x>
        <y>40</y>
-       <width>71</width>
+       <width>91</width>
        <height>27</height>
       </rect>
      </property>
      <property name="specialValueText">
+      <string/>
+     </property>
+     <property name="suffix">
       <string>mV</string>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
      </property>
      <property name="singleStep">
       <number>5</number>
      </property>
     </widget>
-    <widget class="QSpinBox" name="spinCH1scale_2">
+    <widget class="QSpinBox" name="spinCH2scale">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>60</x>
        <y>80</y>
-       <width>71</width>
+       <width>91</width>
        <height>27</height>
       </rect>
      </property>
      <property name="specialValueText">
+      <string/>
+     </property>
+     <property name="suffix">
       <string>mV/div</string>
+     </property>
+     <property name="minimum">
+      <number>1</number>
      </property>
     </widget>
    </widget>
-   <widget class="QFrame" name="frameCH1_3">
+   <widget class="QFrame" name="frameCH3">
     <property name="geometry">
      <rect>
       <x>820</x>
@@ -342,7 +446,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-color: rgb(129, 61, 156);</string>
+     <string notr="true">border-color: rgb(249, 240, 107);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::Shape::StyledPanel</enum>
@@ -350,7 +454,7 @@
     <property name="frameShadow">
      <enum>QFrame::Shadow::Raised</enum>
     </property>
-    <widget class="QCheckBox" name="checkCH1_3">
+    <widget class="QCheckBox" name="checkCH3">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -359,11 +463,15 @@
        <height>24</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(143, 240, 164);
+color: rgb(0, 0, 0);</string>
+     </property>
      <property name="text">
       <string>Channel 3</string>
      </property>
     </widget>
-    <widget class="QLabel" name="labelCH1off_3">
+    <widget class="QLabel" name="labelCH3offset">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -376,7 +484,7 @@
       <string>Offset:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="labelCH3scale">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -389,37 +497,49 @@
       <string>Scale:</string>
      </property>
     </widget>
-    <widget class="QSpinBox" name="spinCH1offset_3">
+    <widget class="QSpinBox" name="spinCH3offset">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>60</x>
        <y>40</y>
-       <width>71</width>
+       <width>91</width>
        <height>27</height>
       </rect>
      </property>
      <property name="specialValueText">
+      <string/>
+     </property>
+     <property name="suffix">
       <string>mV</string>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>1000</number>
      </property>
      <property name="singleStep">
       <number>5</number>
      </property>
     </widget>
-    <widget class="QSpinBox" name="spinCH1scale_3">
+    <widget class="QSpinBox" name="spinCH3scale">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>60</x>
        <y>80</y>
-       <width>71</width>
+       <width>91</width>
        <height>27</height>
       </rect>
      </property>
      <property name="specialValueText">
+      <string/>
+     </property>
+     <property name="suffix">
       <string>mV/div</string>
      </property>
     </widget>
    </widget>
-   <widget class="QFrame" name="frameCH1_4">
+   <widget class="QFrame" name="frameCH4">
     <property name="geometry">
      <rect>
       <x>820</x>
@@ -429,7 +549,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">border-color: rgb(129, 61, 156);</string>
+     <string notr="true">border-color: rgb(153, 193, 241);</string>
     </property>
     <property name="frameShape">
      <enum>QFrame::Shape::StyledPanel</enum>
@@ -437,7 +557,7 @@
     <property name="frameShadow">
      <enum>QFrame::Shadow::Raised</enum>
     </property>
-    <widget class="QCheckBox" name="checkCH1_4">
+    <widget class="QCheckBox" name="checkCH4">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -446,11 +566,15 @@
        <height>24</height>
       </rect>
      </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(153, 193, 241);
+color: rgb(0, 0, 0);</string>
+     </property>
      <property name="text">
-      <string>Channel 3</string>
+      <string>Channel 4</string>
      </property>
     </widget>
-    <widget class="QLabel" name="labelCH1off_4">
+    <widget class="QLabel" name="labelCH4off">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -463,7 +587,7 @@
       <string>Offset:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_4">
+    <widget class="QLabel" name="labelCH4scale">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -476,33 +600,220 @@
       <string>Scale:</string>
      </property>
     </widget>
-    <widget class="QSpinBox" name="spinCH1offset_4">
+    <widget class="QSpinBox" name="spinCH4offset">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>60</x>
        <y>40</y>
-       <width>71</width>
+       <width>91</width>
        <height>27</height>
       </rect>
      </property>
      <property name="specialValueText">
+      <string/>
+     </property>
+     <property name="suffix">
       <string>mV</string>
      </property>
      <property name="singleStep">
       <number>5</number>
      </property>
     </widget>
-    <widget class="QSpinBox" name="spinCH1scale_4">
+    <widget class="QSpinBox" name="spinCH4scale">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>60</x>
        <y>80</y>
-       <width>71</width>
+       <width>91</width>
        <height>27</height>
       </rect>
      </property>
      <property name="specialValueText">
+      <string/>
+     </property>
+     <property name="suffix">
       <string>mV/div</string>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QSlider" name="sliderTrigger">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>109</y>
+      <width>31</width>
+      <height>501</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">handle: Arrow</string>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Orientation::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QFrame" name="FrameControlWavegen">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>0</y>
+      <width>481</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 190, 111);
+color: rgb(0, 0, 0);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Shape::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Shadow::Raised</enum>
+    </property>
+    <widget class="QLabel" name="labelWaveform">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Waveform:</string>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboWaveform">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>10</y>
+       <width>101</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>Triangular</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Square</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Sinusoid</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>DC</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QFrame" name="frame_2">
+     <property name="geometry">
+      <rect>
+       <x>500</x>
+       <y>0</y>
+       <width>451</width>
+       <height>91</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>50</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Amplitude:</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="spinWavegenAmp">
+     <property name="geometry">
+      <rect>
+       <x>110</x>
+       <y>50</y>
+       <width>101</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>mV</string>
+     </property>
+    </widget>
+    <widget class="QSpinBox" name="spinWavegenFreq">
+     <property name="geometry">
+      <rect>
+       <x>320</x>
+       <y>10</y>
+       <width>81</width>
+       <height>27</height>
+      </rect>
+     </property>
+     <property name="suffix">
+      <string>Hz</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>10</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Frequency:</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushRunWavegen">
+     <property name="geometry">
+      <rect>
+       <x>237</x>
+       <y>50</y>
+       <width>161</width>
+       <height>26</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Run Wavegen</string>
+     </property>
+     <property name="icon">
+      <iconset theme="QIcon::ThemeIcon::MediaSeekForward"/>
      </property>
     </widget>
    </widget>
@@ -512,7 +823,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1002</width>
+     <width>1003</width>
      <height>23</height>
     </rect>
    </property>
