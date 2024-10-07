@@ -10,9 +10,7 @@ class MainWindow(uiclass, baseclass):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.widget.plot(np.random.normal(size=1000), pen=(255,0,0))
-        # Add a horizontal line at y=1 with dashed white pen
-        self.widget.addLine(y=1, pen=pg.mkPen('w', width=1, style=QtCore.Qt.DashLine))
+        self.widget.plot(np.sin(2*np.pi*0.01*np.arange(10000)) + 0.05*np.random.normal(size=10000), pen=(255,0,0))
 
 
 def main():

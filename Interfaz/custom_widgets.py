@@ -24,10 +24,34 @@ class SerialReader(QtCore.QObject):
                 self.data_received.emit(data)
 
 
+
 class SignalPlotter(pg.PlotWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setRange(xRange=(0, DATA_LEN), disableAutoRange=True)
+
+        # Set y range to 10 divisions, from -5 to 5, and dynamic x range, no auto range
+        self.setRange(yRange=(-5, 5), disableAutoRange=True)
+        self.setRange(xRange=(0, DATA_LEN), disableAutoRange=True, padding=0)
+
+        # Disable dragging
+        self.setMouseEnabled(x=False, y=False)
+
+        # Set up the grid
+        self.showGrid(x=True, y=True)
+
+        # Add a draggable horizontal, cyan, dashed, draggable line. Set cursor to open hand, close hand when hovering
+        self.trigger_pen = pg.mkPen(color='cyan', style=QtCore.Qt.DashLine, width=2)
+        self.triggerLine = pg.InfiniteLine(movable=True, angle=0, pen=self.trigger_pen)
+        self.triggerLine.setCursor(QtCore.Qt.OpenHandCursor)
+        self.triggerLine.setHoverPen(pg.mkPen(color='cyan', style=QtCore.Qt.DashLine, width=3))
+
+        # Add the line to the plot, above all other plot lines, and lock it at the top layer
+        self.addItem(self.triggerLine)
+        self.triggerLine.setZValue(10)
+
+        # Change cursor to closed hand when the line is being moved
+        self.triggerLine.sigDragged.connect(lambda: self.triggerLine.setCursor(QtCore.Qt.ClosedHandCursor))
+        self.triggerLine.sigPositionChangeFinished.connect(lambda: self.triggerLine.setCursor(QtCore.Qt.OpenHandCursor))
 
     def wheelEvent(self, event):
         current_range = self.getViewBox().viewRange()
@@ -39,9 +63,8 @@ class SignalPlotter(pg.PlotWidget):
         new_right_limit = old_range[1] * factor
         new_x_range = (0, new_right_limit)
         if new_right_limit < DATA_LEN:
-            self.setRange(xRange=new_x_range)
+            self.setRange(xRange=new_x_range, padding=0)
         event.accept()
-
 
 class Oscilloscope(QtWidgets.QMainWindow):
     def __init__(self):
