@@ -1,5 +1,7 @@
+# The code is a simple digital oscilloscope that reads data from a serial port and plots it in real-time.
+
 import sys
-from PyQt6 import QtWidgets, QtCore, QtSerialPort
+from PySide6 import QtWidgets, QtCore, QtSerialPort
 import pyqtgraph as pg
 
 BAUD_RATE = 115200
@@ -8,13 +10,13 @@ BUFFER_SIZE = 100
 REFRESH_RATE = 10  # Refresh rate in milliseconds
 
 class SerialReader(QtCore.QObject):
-    data_received = QtCore.pyqtSignal(bytes)
+    data_received = QtCore.Signal(bytes)
 
     def __init__(self, serial_port):
         super().__init__()
         self.serial = serial_port
 
-    @QtCore.pyqtSlot()
+    @QtCore.Slot()
     def read_data(self):
         if self.serial.canReadLine():
             data = self.serial.read(BUFFER_SIZE)
@@ -22,10 +24,34 @@ class SerialReader(QtCore.QObject):
                 self.data_received.emit(data)
 
 
+
 class SignalPlotter(pg.PlotWidget):
-    def __init__(self):
-        super().__init__()
-        self.setRange(xRange=(0, DATA_LEN), disableAutoRange=True)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Set y range to 10 divisions, from -5 to 5, and dynamic x range, no auto range
+        self.setRange(yRange=(-5, 5), disableAutoRange=True)
+        self.setRange(xRange=(0, DATA_LEN), disableAutoRange=True, padding=0)
+
+        # Disable dragging
+        self.setMouseEnabled(x=False, y=False)
+
+        # Set up the grid
+        self.showGrid(x=True, y=True)
+
+        # Add a draggable horizontal, cyan, dashed, draggable line. Set cursor to open hand, close hand when hovering
+        self.trigger_pen = pg.mkPen(color='cyan', style=QtCore.Qt.DashLine, width=2)
+        self.triggerLine = pg.InfiniteLine(movable=True, angle=0, pen=self.trigger_pen)
+        self.triggerLine.setCursor(QtCore.Qt.OpenHandCursor)
+        self.triggerLine.setHoverPen(pg.mkPen(color='cyan', style=QtCore.Qt.DashLine, width=3))
+
+        # Add the line to the plot, above all other plot lines, and lock it at the top layer
+        self.addItem(self.triggerLine)
+        self.triggerLine.setZValue(10)
+
+        # Change cursor to closed hand when the line is being moved
+        self.triggerLine.sigDragged.connect(lambda: self.triggerLine.setCursor(QtCore.Qt.ClosedHandCursor))
+        self.triggerLine.sigPositionChangeFinished.connect(lambda: self.triggerLine.setCursor(QtCore.Qt.OpenHandCursor))
 
     def wheelEvent(self, event):
         current_range = self.getViewBox().viewRange()
@@ -37,9 +63,8 @@ class SignalPlotter(pg.PlotWidget):
         new_right_limit = old_range[1] * factor
         new_x_range = (0, new_right_limit)
         if new_right_limit < DATA_LEN:
-            self.setRange(xRange=new_x_range)
+            self.setRange(xRange=new_x_range, padding=0)
         event.accept()
-
 
 class Oscilloscope(QtWidgets.QMainWindow):
     def __init__(self):
@@ -67,7 +92,7 @@ class Oscilloscope(QtWidgets.QMainWindow):
             self.serial = QtSerialPort.QSerialPort()
             self.serial.setPortName(port_name)
             self.serial.setBaudRate(BAUD_RATE)
-            if not self.serial.open(QtCore.QIODeviceBase.OpenModeFlag.ReadWrite):
+            if not self.serial.open(QtCore.QIODeviceBase.ReadWrite):
                 QtWidgets.QMessageBox.critical(self, 'Serial Port Error', f"Can't open {port_name}")
                 self.close()
                 return
@@ -101,7 +126,7 @@ class Oscilloscope(QtWidgets.QMainWindow):
         x_range = vb.viewRange()[0]  # First element is the x-axis range
         return x_range
 
-    @QtCore.pyqtSlot(bytes)
+    @QtCore.Slot(bytes)
     def process_serial_data(self, data):
         self.data.extend(data)
         x_range = self.get_x_range()

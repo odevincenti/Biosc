@@ -1,6 +1,7 @@
 import json
 from serial import Serial
 from serial.tools import list_ports
+import matplotlib.pyplot as plt
 
 BAUD_RATE = 9600
 
@@ -8,12 +9,10 @@ def process_message(message):
     print(message.split('-'))
     data = message.split('-')[1]
     data = json.loads(data)
-    
-    print(data, '\n')
-    print(data[0], '\n')
-    print(data[1], '\n')
-    print(data[0]['channel'], '\n')
-    print(data[0]['signal'], '\n')
+    ch1 = data[0]
+
+    plt.plot(ch1['signal'])
+    plt.show()  
 
 
 def main():
@@ -28,13 +27,18 @@ def main():
     print('Serial connection established')
     
     command = '<H>'
-    while command != 'exit':
+    while command != '<exit>':
         command = input('Enter command: ')
-        serial_con.write(command.encode())
-        message = serial_con.readline().decode()
-        print('Message:', message)
+        if '<' not in command or '>' not in command:
+            print('Invalid command')
+            continue
+        serial_con.write(command.upper().encode())
+        serial_con.readline()
         if command == '<MS>':
-            process_message(message)
+            message = serial_con.readline().decode().strip()
+            print('Message:', message)
+            if 'MS-' in message:
+                process_message(message)
     
 
 if __name__ == '__main__':

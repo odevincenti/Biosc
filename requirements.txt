@@ -1,6 +1,8 @@
 PyQt6
 pyqt6-tools
+PySide6
 pyqtgraph
 pyserial
 numpy
 scipy
+matplotlib
