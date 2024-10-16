@@ -10,8 +10,15 @@ class MainWindow(uiclass, baseclass):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.widget.plot(np.sin(2*np.pi*0.01*np.arange(10000)) + 0.05*np.random.normal(size=10000), pen=(255,0,0))
+        self.dummy_signal = 100*np.sin(1*np.pi*0.01*np.arange(10000)) + 0.05*np.random.normal(size=10000)
+        self.plotWidget.plot(self.dummy_signal, pen=(255,0,0))
 
+        self.spinScaleCH1.valueChanged.connect(self.update_plot)
+
+    def update_plot(self):
+        scale = self.spinScaleCH1.value()
+        self.plotWidget.clear()
+        self.plotWidget.plot(self.dummy_signal/scale, pen=(255,0,0))
 
 def main():
     app = QApplication(sys.argv)
