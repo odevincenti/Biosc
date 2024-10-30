@@ -1,13 +1,13 @@
 # The code is a simple digital oscilloscope that reads data from a serial port and plots it in real-time.
 
-import sys
-from PySide6 import QtWidgets, QtCore, QtSerialPort
+from PySide6 import QtWidgets, QtCore
 import pyqtgraph as pg
 
 BAUD_RATE = 115200
-DATA_LEN = 4000
 BUFFER_SIZE = 100
 REFRESH_RATE = 10  # Refresh rate in milliseconds
+N_X_DIVS = 15  # Number of divisions in the x axis
+N_Y_DIVS = 10  # Number of divisions in the y axis
 
 class SerialReader(QtCore.QObject):
     data_received = QtCore.Signal(bytes)
@@ -35,10 +35,14 @@ class CustomScaleSpinBox(QtWidgets.QSpinBox):
         self.setRange(1, 10000)
         self.setSingleStep(1)
 
+        # Initialize value at 50 mV/div
+        self.setValue(100)
+
     def get_valid_values(self):
         # Generate the possible values based on units and scales
-        valid_values = [unit * scale for scale in self.scales for unit in self.units]
+        valid_values = [mult * scale for scale in self.scales for mult in self.units]
         return sorted(set(valid_values))
+
 
     def stepBy(self, steps):
         current_value = self.value()
@@ -74,8 +78,21 @@ class SignalPlotter(pg.PlotWidget):
         super().__init__(*args, **kwargs)
 
         # Set y range to 10 divisions, from -5 to 5, and dynamic x range, no auto range
-        self.setRange(yRange=(-5, 5), disableAutoRange=True)
-        self.setRange(xRange=(0, DATA_LEN), disableAutoRange=True, padding=0)
+        self.setRange(yRange=(-N_Y_DIVS//2, N_Y_DIVS//2), disableAutoRange=True)
+
+        # Set the time scales
+        self.time_scales = self.get_valid_time_scales()
+        self.len_time_scales = len(self.time_scales)
+        self.init_t_scale = self.time_scales[self.len_time_scales//2]  # 1 ms/div
+        self.setRange(xRange=(0, N_X_DIVS*self.init_t_scale + 0.3*self.init_t_scale), disableAutoRange=True, padding=0)
+
+
+        # Add a label in the top right corner to indicate the current time scale
+        self.time_label = pg.LabelItem(justify='right')
+        self.getPlotItem().scene().addItem(self.time_label)
+        self.time_label.setParentItem(self.getPlotItem().vb)
+        self.time_label.anchor((1, 0), (1, 0))  # Top-right corner
+        self.update_time_label_and_ticks(self.init_t_scale)
 
         # Disable dragging
         self.setMouseEnabled(x=False, y=False)
@@ -83,122 +100,80 @@ class SignalPlotter(pg.PlotWidget):
         # Set up the grid
         self.showGrid(x=True, y=True)
 
-        # Add a draggable horizontal, cyan, dashed, draggable line. Set cursor to open hand, close hand when hovering
+        # Trigger level line
         self.trigger_pen = pg.mkPen(color='cyan', style=QtCore.Qt.DashLine, width=2)
         self.triggerLine = pg.InfiniteLine(movable=True, angle=0, pen=self.trigger_pen)
         self.triggerLine.setCursor(QtCore.Qt.OpenHandCursor)
         self.triggerLine.setHoverPen(pg.mkPen(color='cyan', style=QtCore.Qt.DashLine, width=3))
 
-        # Add the line to the plot, above all other plot lines, and lock it at the top layer
-        self.addItem(self.triggerLine)
-        self.triggerLine.setZValue(10)
-
         # Change cursor to closed hand when the line is being moved
         self.triggerLine.sigDragged.connect(lambda: self.triggerLine.setCursor(QtCore.Qt.ClosedHandCursor))
         self.triggerLine.sigPositionChangeFinished.connect(lambda: self.triggerLine.setCursor(QtCore.Qt.OpenHandCursor))
 
+    @staticmethod
+    def get_valid_time_scales():
+        multiplyers = [1, 2, 5, 10, 20, 50, 100, 200, 500]
+        units = [1, 1_000, 1_000_000] # us, ms, s
+        return sorted(set([mult * unit for mult in multiplyers for unit in units]))
+
     def wheelEvent(self, event):
+
         current_range = self.getViewBox().viewRange()
         old_range = current_range[0]
+        current_scale = (old_range[1] - old_range[0])//N_X_DIVS
+
+        # Find the nearest valid timescale
+        if current_scale in self.time_scales:
+            current_index = self.time_scales.index(current_scale)
+        else:
+            current_index = min(range(self.len_time_scales), key=lambda i: abs(self.time_scales[i] - current_scale))
 
         # Zoom in or out
         delta = event.angleDelta().y()
-        factor = 1.1 if delta > 0 else 0.9
-        new_right_limit = old_range[1] * factor
-        new_x_range = (0, new_right_limit)
-        if new_right_limit < DATA_LEN:
-            self.setRange(xRange=new_x_range, padding=0)
+        new_index = current_index + (1 if delta < 0 else -1)
+        new_index = max(0, min(new_index, self.len_time_scales - 1))
+        new_scale = self.time_scales[new_index]
+        new_x_range = (0, N_X_DIVS*new_scale + 0.3*new_scale)
+
+        # Update range, and set the label
+        self.setRange(xRange=new_x_range, padding=0)
+        self.update_time_label_and_ticks(new_scale)
         event.accept()
 
-class Oscilloscope(QtWidgets.QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle('Digital Oscilloscope')
+    def update_time_label_and_ticks(self, current_scale):
+        # Indicate time in the appropriate units (base is us)
+        if current_scale >= 1_000_000:
+            tick_multiplyer = 1_000_000
+            mult_str = ''
 
-        # Set up the plot
-        self.plot_widget = SignalPlotter()
-        self.setCentralWidget(self.plot_widget)
-        self.plot = self.plot_widget.plot(pen='r')
-
-        # Set up a timer to refresh the plot
-        self.timer = QtCore.QTimer()
-        self.timer.setInterval(REFRESH_RATE)
-        self.timer.timeout.connect(self.update_plot)
-        self.timer.start()
-
-        # Initialize data buffer
-        self.data = [0 for _ in range(DATA_LEN)]
-        self.data_len = DATA_LEN
-
-        # Set up the serial port in the main thread
-        port_name = self.get_serial_port()
-        if port_name:
-            self.serial = QtSerialPort.QSerialPort()
-            self.serial.setPortName(port_name)
-            self.serial.setBaudRate(BAUD_RATE)
-            if not self.serial.open(QtCore.QIODeviceBase.ReadWrite):
-                QtWidgets.QMessageBox.critical(self, 'Serial Port Error', f"Can't open {port_name}")
-                self.close()
-                return
-
-            self.serial.write(b's')
-
-            # Set up the serial reader in a separate thread
-            self.serial_thread = QtCore.QThread()
-            self.reader = SerialReader(self.serial)
-            self.reader.moveToThread(self.serial_thread)
-            self.reader.data_received.connect(self.process_serial_data)
-            self.serial.readyRead.connect(self.reader.read_data)
-
-            # Start the thread
-            self.serial_thread.start()
-
+        elif current_scale >= 1_000:
+            tick_multiplyer = 1_000
+            mult_str = 'm'
         else:
-            QtWidgets.QMessageBox.critical(self, 'Serial Port Error', 'No suitable serial port found.')
-            self.close()
+            tick_multiplyer = 1
+            mult_str = '\u03BC'
 
-    @staticmethod
-    def get_serial_port():
-        available_ports = QtSerialPort.QSerialPortInfo.availablePorts()
-        for port in available_ports:
-            if 'USB' in port.description():
-                return port.portName()
-        return None
+        self.time_label.setText(f"{current_scale//tick_multiplyer} {mult_str}s/div")
 
-    def get_x_range(self):
-        vb = self.plot_widget.getPlotItem().getViewBox()
-        x_range = vb.viewRange()[0]  # First element is the x-axis range
-        return x_range
+        # Set the ticks
+        x_axis = self.getAxis('bottom')
+        x_ticks_pos = [i*current_scale for i in range(N_X_DIVS + 1)]
+        x_ticks_labels = [f"{i*current_scale//tick_multiplyer}" for i in range(N_X_DIVS + 1)]
+        x_ticks_labels[-1] = f"[{mult_str}s]"
+        x_axis.setTicks([list(zip(x_ticks_pos, x_ticks_labels))])
 
-    @QtCore.Slot(bytes)
-    def process_serial_data(self, data):
-        self.data.extend(data)
-        x_range = self.get_x_range()
-        # self.data_len = int(x_range[1] - x_range[0]) + 1
-        if len(self.data) > self.data_len:
-            self.data = self.data[-self.data_len:]
 
-    def update_plot(self):
-        self.serial.write(b's')
-        self.plot.setData(self.data)
+    def set_trigger_line(self):
+        # Add the line to the plot, above all other plot lines, and lock it at the top layer
+        self.addItem(self.triggerLine)
+        self.triggerLine.setZValue(float('inf'))  # Set to the highest possible z value
+        self.triggerLine.setFlag(pg.GraphicsObject.ItemIgnoresParentOpacity, True)  # Ensure it stays on top
 
-    def closeEvent(self, event):
-        if hasattr(self, 'serial_thread') and self.serial_thread.isRunning():
-            self.serial_thread.quit()
-            self.serial_thread.wait()
-
-        if self.serial.isOpen():
-            self.serial.close()
-
-        event.accept()
-
+    def remove_trigger_line(self):
+        self.removeItem(self.triggerLine)
 
 def main():
-    app = QtWidgets.QApplication(sys.argv)
-    oscilloscope = Oscilloscope()
-    oscilloscope.show()
-    sys.exit(app.exec())
-
+    pass
 
 if __name__ == '__main__':
     main()
