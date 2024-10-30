@@ -86,9 +86,12 @@ class SignalPlotter(pg.PlotWidget):
         self.init_t_scale = self.time_scales[self.len_time_scales//2]  # 1 ms/div
         self.setRange(xRange=(0, N_X_DIVS*self.init_t_scale + 0.3*self.init_t_scale), disableAutoRange=True, padding=0)
 
-
         # Add a label in the top right corner to indicate the current time scale
-        self.time_label = pg.LabelItem(justify='right')
+        self.time_label = pg.LabelItem(justify='right',
+                                        size='12pt',
+                                        bold=True,
+                                        font='Arial',
+                                        angle=0)
         self.getPlotItem().scene().addItem(self.time_label)
         self.time_label.setParentItem(self.getPlotItem().vb)
         self.time_label.anchor((1, 0), (1, 0))  # Top-right corner

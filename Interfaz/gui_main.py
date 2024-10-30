@@ -1,6 +1,5 @@
 import sys
-
-from PySide6.QtWidgets import QMainWindow
+from PySide6.QtWidgets import QMainWindow, QVBoxLayout, QWidget
 from PySide6.QtWidgets import QApplication
 from PySide6 import QtCore
 import pyqtgraph as pg
@@ -13,6 +12,7 @@ class MainWindow(QMainWindow, Ui_Bioscope):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        self.setWindowTitle('Bioscope')
 
         # Dummy signals for testing
         self.dummy_signal = 100*np.sin(2*np.pi*1e-4*np.arange(TEST_SIG_LEN)) + 5*np.random.normal(size=TEST_SIG_LEN)
