@@ -23,8 +23,8 @@ class MainWindow(QMainWindow, Ui_Bioscope):
 
         # Connect the trigger button to the trigger line method from the plot widget
         self.setup_capture_combo()
-        self.comboCaptureMode.currentTextChanged.connect(self.setup_capture_combo)
-        self.comboCaptureMode.setCurrentText('Trigger')
+        self.comboMode.currentTextChanged.connect(self.setup_capture_combo)
+        self.comboMode.setCurrentText('Trigger')
 
     def update_plot(self):
         scale = self.spinScaleCH1.value()
@@ -32,7 +32,7 @@ class MainWindow(QMainWindow, Ui_Bioscope):
         self.plotWidget.plot(self.dummy_signal/scale, pen=(255,0,0))
 
     def setup_capture_combo(self):
-        capture_mode = self.comboCaptureMode.currentText()
+        capture_mode = self.comboMode.currentText()
         if capture_mode == 'Trigger':
             self.setup_capture_trigger()
         else:

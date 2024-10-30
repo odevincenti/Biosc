@@ -16,9 +16,9 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+     <layout class="QVBoxLayout" name="VLayoutGlobal">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="HLayoutControl">
         <item>
          <widget class="QFrame" name="FrameControlScope">
           <property name="sizePolicy">
@@ -41,185 +41,217 @@ color: rgb(0, 0, 0);</string>
           <property name="frameShape">
            <enum>QFrame::Shape::NoFrame</enum>
           </property>
-          <widget class="QPushButton" name="buttonSingle">
-           <property name="geometry">
-            <rect>
-             <x>120</x>
-             <y>10</y>
-             <width>101</width>
-             <height>71</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>11</pointsize>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Single</string>
-           </property>
-           <property name="icon">
-            <iconset theme="QIcon::ThemeIcon::MediaPlaybackPause"/>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>25</width>
-             <height>25</height>
-            </size>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="buttonRunStop">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>10</y>
-             <width>101</width>
-             <height>71</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>11</pointsize>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Run</string>
-           </property>
-           <property name="icon">
-            <iconset theme="QIcon::ThemeIcon::MediaPlaybackStart"/>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>25</width>
-             <height>25</height>
-            </size>
-           </property>
-          </widget>
-          <widget class="QLabel" name="labelMode">
-           <property name="geometry">
-            <rect>
-             <x>250</x>
-             <y>10</y>
-             <width>51</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Mode:</string>
-           </property>
-          </widget>
-          <widget class="QComboBox" name="comboCaptureMode">
-           <property name="geometry">
-            <rect>
-             <x>310</x>
-             <y>10</y>
-             <width>91</width>
-             <height>26</height>
-            </rect>
-           </property>
+          <layout class="QHBoxLayout" name="horizontalLayout">
            <item>
-            <property name="text">
-             <string>Trigger</string>
-            </property>
+            <widget class="QPushButton" name="buttonRunStop">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Run</string>
+             </property>
+             <property name="icon">
+              <iconset theme="QIcon::ThemeIcon::MediaPlaybackStart"/>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
-            <property name="text">
-             <string>Roll</string>
-            </property>
+            <widget class="QPushButton" name="buttonSingle">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>11</pointsize>
+               <bold>false</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Single</string>
+             </property>
+             <property name="icon">
+              <iconset theme="QIcon::ThemeIcon::MediaPlaybackPause"/>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
+            </widget>
            </item>
            <item>
-            <property name="text">
-             <string>XY</string>
-            </property>
-           </item>
-          </widget>
-          <widget class="QPushButton" name="buttonAutoscale">
-           <property name="geometry">
-            <rect>
-             <x>250</x>
-             <y>50</y>
-             <width>151</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Autoscale</string>
-           </property>
-           <property name="icon">
-            <iconset theme="QIcon::ThemeIcon::ZoomFitBest"/>
-           </property>
-          </widget>
-          <widget class="QComboBox" name="comboTriggerSet">
-           <property name="geometry">
-            <rect>
-             <x>410</x>
-             <y>10</y>
-             <width>86</width>
-             <height>26</height>
-            </rect>
-           </property>
-           <item>
-            <property name="text">
-             <string>Rise</string>
-            </property>
-            <property name="icon">
-             <iconset theme="QIcon::ThemeIcon::GoUp"/>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Fall</string>
-            </property>
-            <property name="icon">
-             <iconset theme="QIcon::ThemeIcon::GoDown"/>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Both</string>
-            </property>
-            <property name="icon">
-             <iconset theme="QIcon::ThemeIcon::MediaPlaylistShuffle"/>
-            </property>
-           </item>
-          </widget>
-          <widget class="QComboBox" name="comboTriggerCH">
-           <property name="geometry">
-            <rect>
-             <x>410</x>
-             <y>50</y>
-             <width>86</width>
-             <height>31</height>
-            </rect>
-           </property>
-           <item>
-            <property name="text">
-             <string>CH1</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>CH2</string>
-            </property>
+            <layout class="QVBoxLayout" name="VLayoutModeAuto">
+             <item>
+              <layout class="QHBoxLayout" name="HLayoutMode">
+               <item>
+                <widget class="QLabel" name="labelMode">
+                 <property name="font">
+                  <font>
+                   <pointsize>12</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Mode:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboMode">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>10</height>
+                  </size>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>Trigger</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Roll</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>XY</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QPushButton" name="buttonAutoscale">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>12</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>Autoscale</string>
+               </property>
+               <property name="icon">
+                <iconset theme="QIcon::ThemeIcon::ZoomFitBest"/>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
-            <property name="text">
-             <string>CH3</string>
-            </property>
+            <layout class="QVBoxLayout" name="VLayoutTriggerRight">
+             <item>
+              <widget class="QComboBox" name="comboTriggerSet">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>10</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Rise</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="QIcon::ThemeIcon::GoUp"/>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Fall</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="QIcon::ThemeIcon::GoDown"/>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Both</string>
+                </property>
+                <property name="icon">
+                 <iconset theme="QIcon::ThemeIcon::MediaPlaylistShuffle"/>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="comboTriggerCH">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>10</height>
+                </size>
+               </property>
+               <item>
+                <property name="text">
+                 <string>CH1</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>CH2</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>CH3</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>CH4</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
            </item>
-           <item>
-            <property name="text">
-             <string>CH4</string>
-            </property>
-           </item>
-          </widget>
+          </layout>
          </widget>
         </item>
         <item>
@@ -243,138 +275,118 @@ color: rgb(0, 0, 0);</string>
           <property name="frameShape">
            <enum>QFrame::Shape::NoFrame</enum>
           </property>
-          <widget class="QLabel" name="labelWaveform">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>10</y>
-             <width>91</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Waveform:</string>
-           </property>
-          </widget>
-          <widget class="QComboBox" name="comboWaveform">
-           <property name="geometry">
-            <rect>
-             <x>110</x>
-             <y>10</y>
-             <width>101</width>
-             <height>26</height>
-            </rect>
-           </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <property name="text">
-             <string>Triangular</string>
-            </property>
+            <layout class="QVBoxLayout" name="VLayoutWavAmp">
+             <item>
+              <layout class="QHBoxLayout" name="HLayoutWaveform">
+               <item>
+                <widget class="QLabel" name="labelWaveform">
+                 <property name="font">
+                  <font>
+                   <pointsize>12</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Waveform:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QComboBox" name="comboWaveform">
+                 <item>
+                  <property name="text">
+                   <string>Triangular</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Square</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Sinusoid</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>DC</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="HLayoutAmplitud">
+               <item>
+                <widget class="QLabel" name="labelAmplitude">
+                 <property name="font">
+                  <font>
+                   <pointsize>12</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Amplitude:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="spinWavegenAmp">
+                 <property name="suffix">
+                  <string>mV</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
            </item>
            <item>
-            <property name="text">
-             <string>Square</string>
-            </property>
+            <layout class="QVBoxLayout" name="VLayoutFreqRunWav">
+             <item>
+              <layout class="QHBoxLayout" name="HLayoutFreq">
+               <item>
+                <widget class="QLabel" name="labelFrequency">
+                 <property name="font">
+                  <font>
+                   <pointsize>12</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Frequency:</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QSpinBox" name="spinWavegenFreq">
+                 <property name="suffix">
+                  <string>Hz</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushRunWavegen">
+               <property name="text">
+                <string>Run Wavegen</string>
+               </property>
+               <property name="icon">
+                <iconset theme="QIcon::ThemeIcon::MediaSeekForward"/>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
-           <item>
-            <property name="text">
-             <string>Sinusoid</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>DC</string>
-            </property>
-           </item>
-          </widget>
-          <widget class="QLabel" name="labelAmplitude">
-           <property name="geometry">
-            <rect>
-             <x>20</x>
-             <y>50</y>
-             <width>81</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Amplitude:</string>
-           </property>
-          </widget>
-          <widget class="QSpinBox" name="spinWavegenAmp">
-           <property name="geometry">
-            <rect>
-             <x>110</x>
-             <y>50</y>
-             <width>101</width>
-             <height>27</height>
-            </rect>
-           </property>
-           <property name="suffix">
-            <string>mV</string>
-           </property>
-          </widget>
-          <widget class="QSpinBox" name="spinWavegenFreq">
-           <property name="geometry">
-            <rect>
-             <x>320</x>
-             <y>10</y>
-             <width>81</width>
-             <height>27</height>
-            </rect>
-           </property>
-           <property name="suffix">
-            <string>Hz</string>
-           </property>
-          </widget>
-          <widget class="QLabel" name="labelFrequency">
-           <property name="geometry">
-            <rect>
-             <x>230</x>
-             <y>10</y>
-             <width>81</width>
-             <height>21</height>
-            </rect>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="text">
-            <string>Frequency:</string>
-           </property>
-          </widget>
-          <widget class="QPushButton" name="pushRunWavegen">
-           <property name="geometry">
-            <rect>
-             <x>237</x>
-             <y>50</y>
-             <width>161</width>
-             <height>26</height>
-            </rect>
-           </property>
-           <property name="text">
-            <string>Run Wavegen</string>
-           </property>
-           <property name="icon">
-            <iconset theme="QIcon::ThemeIcon::MediaSeekForward"/>
-           </property>
-          </widget>
+          </layout>
          </widget>
         </item>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <layout class="QHBoxLayout" name="HLayoutPlotCH">
         <item>
          <widget class="SignalPlotter" name="plotWidget" native="true">
           <property name="sizePolicy">
@@ -410,84 +422,55 @@ color: rgb(0, 0, 0);</string>
             <property name="frameShape">
              <enum>QFrame::Shape::NoFrame</enum>
             </property>
-            <widget class="QCheckBox" name="checkCH1">
-             <property name="geometry">
-              <rect>
-               <x>40</x>
-               <y>10</y>
-               <width>88</width>
-               <height>19</height>
-              </rect>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(246, 97, 81);
+            <layout class="QFormLayout" name="formLayout_3">
+             <item row="0" column="0" colspan="2">
+              <widget class="QCheckBox" name="checkCH1">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(246, 97, 81);
 color: rgb(0, 0, 0);</string>
-             </property>
-             <property name="text">
-              <string>Channel 1</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="labelCH1offset">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>47</y>
-               <width>66</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Offset:</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="labelCH1scale">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>80</y>
-               <width>66</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Scale:</string>
-             </property>
-            </widget>
-            <widget class="QSpinBox" name="spinCH1offset">
-             <property name="geometry">
-              <rect>
-               <x>60</x>
-               <y>40</y>
-               <width>91</width>
-               <height>27</height>
-              </rect>
-             </property>
-             <property name="specialValueText">
-              <string/>
-             </property>
-             <property name="suffix">
-              <string>mV</string>
-             </property>
-             <property name="minimum">
-              <number>0</number>
-             </property>
-             <property name="maximum">
-              <number>1000</number>
-             </property>
-             <property name="singleStep">
-              <number>5</number>
-             </property>
-            </widget>
-            <widget class="CustomScaleSpinBox" name="spinScaleCH1">
-             <property name="geometry">
-              <rect>
-               <x>60</x>
-               <y>80</y>
-               <width>91</width>
-               <height>21</height>
-              </rect>
-             </property>
-            </widget>
+               </property>
+               <property name="text">
+                <string>Channel 1</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelCH1offset">
+               <property name="text">
+                <string>Offset:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="spinCH1offset">
+               <property name="specialValueText">
+                <string/>
+               </property>
+               <property name="suffix">
+                <string>mV</string>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>1000</number>
+               </property>
+               <property name="singleStep">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelCH1scale">
+               <property name="text">
+                <string>Scale:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="CustomScaleSpinBox" name="spinScaleCH1"/>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
@@ -510,84 +493,55 @@ color: rgb(0, 0, 0);</string>
             <property name="frameShape">
              <enum>QFrame::Shape::NoFrame</enum>
             </property>
-            <widget class="QCheckBox" name="checkCH2">
-             <property name="geometry">
-              <rect>
-               <x>40</x>
-               <y>10</y>
-               <width>91</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(249, 240, 107);
+            <layout class="QFormLayout" name="formLayout_2">
+             <item row="0" column="0" colspan="2">
+              <widget class="QCheckBox" name="checkCH2">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(249, 240, 107);
 color: rgb(0, 0, 0);</string>
-             </property>
-             <property name="text">
-              <string>Channel 2</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="labelCH2offset">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>47</y>
-               <width>66</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Offset:</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="labelCH2scale">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>80</y>
-               <width>66</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Scale:</string>
-             </property>
-            </widget>
-            <widget class="QSpinBox" name="spinCH2offset">
-             <property name="geometry">
-              <rect>
-               <x>60</x>
-               <y>40</y>
-               <width>91</width>
-               <height>27</height>
-              </rect>
-             </property>
-             <property name="specialValueText">
-              <string/>
-             </property>
-             <property name="suffix">
-              <string>mV</string>
-             </property>
-             <property name="minimum">
-              <number>0</number>
-             </property>
-             <property name="maximum">
-              <number>1000</number>
-             </property>
-             <property name="singleStep">
-              <number>5</number>
-             </property>
-            </widget>
-            <widget class="CustomScaleSpinBox" name="spinScaleCH2">
-             <property name="geometry">
-              <rect>
-               <x>60</x>
-               <y>80</y>
-               <width>91</width>
-               <height>21</height>
-              </rect>
-             </property>
-            </widget>
+               </property>
+               <property name="text">
+                <string>Channel 2</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelCH2offset">
+               <property name="text">
+                <string>Offset:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="spinCH2offset">
+               <property name="specialValueText">
+                <string/>
+               </property>
+               <property name="suffix">
+                <string>mV</string>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>1000</number>
+               </property>
+               <property name="singleStep">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelCH2scale">
+               <property name="text">
+                <string>Scale:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="CustomScaleSpinBox" name="spinScaleCH2"/>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
@@ -610,84 +564,55 @@ color: rgb(0, 0, 0);</string>
             <property name="frameShape">
              <enum>QFrame::Shape::NoFrame</enum>
             </property>
-            <widget class="QCheckBox" name="checkCH3">
-             <property name="geometry">
-              <rect>
-               <x>40</x>
-               <y>10</y>
-               <width>91</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(143, 240, 164);
+            <layout class="QFormLayout" name="formLayout">
+             <item row="0" column="0" colspan="2">
+              <widget class="QCheckBox" name="checkCH3">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(143, 240, 164);
 color: rgb(0, 0, 0);</string>
-             </property>
-             <property name="text">
-              <string>Channel 3</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="labelCH3offset">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>47</y>
-               <width>66</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Offset:</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="labelCH3scale">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>80</y>
-               <width>66</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Scale:</string>
-             </property>
-            </widget>
-            <widget class="QSpinBox" name="spinCH3offset">
-             <property name="geometry">
-              <rect>
-               <x>60</x>
-               <y>40</y>
-               <width>91</width>
-               <height>27</height>
-              </rect>
-             </property>
-             <property name="specialValueText">
-              <string/>
-             </property>
-             <property name="suffix">
-              <string>mV</string>
-             </property>
-             <property name="minimum">
-              <number>0</number>
-             </property>
-             <property name="maximum">
-              <number>1000</number>
-             </property>
-             <property name="singleStep">
-              <number>5</number>
-             </property>
-            </widget>
-            <widget class="CustomScaleSpinBox" name="spinScaleCH3">
-             <property name="geometry">
-              <rect>
-               <x>60</x>
-               <y>80</y>
-               <width>91</width>
-               <height>21</height>
-              </rect>
-             </property>
-            </widget>
+               </property>
+               <property name="text">
+                <string>Channel 3</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelCH3offset">
+               <property name="text">
+                <string>Offset:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="spinCH3offset">
+               <property name="specialValueText">
+                <string/>
+               </property>
+               <property name="suffix">
+                <string>mV</string>
+               </property>
+               <property name="minimum">
+                <number>0</number>
+               </property>
+               <property name="maximum">
+                <number>1000</number>
+               </property>
+               <property name="singleStep">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelCH3scale">
+               <property name="text">
+                <string>Scale:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="CustomScaleSpinBox" name="spinScaleCH3"/>
+             </item>
+            </layout>
            </widget>
           </item>
           <item>
@@ -710,78 +635,49 @@ color: rgb(0, 0, 0);</string>
             <property name="frameShape">
              <enum>QFrame::Shape::NoFrame</enum>
             </property>
-            <widget class="QCheckBox" name="checkCH4">
-             <property name="geometry">
-              <rect>
-               <x>40</x>
-               <y>10</y>
-               <width>91</width>
-               <height>24</height>
-              </rect>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(153, 193, 241);
+            <layout class="QFormLayout" name="formLayout_4">
+             <item row="0" column="0" colspan="2">
+              <widget class="QCheckBox" name="checkCH4">
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(153, 193, 241);
 color: rgb(0, 0, 0);</string>
-             </property>
-             <property name="text">
-              <string>Channel 4</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="labelCH4off">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>47</y>
-               <width>66</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Offset:</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="labelCH4scale">
-             <property name="geometry">
-              <rect>
-               <x>10</x>
-               <y>80</y>
-               <width>66</width>
-               <height>21</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Scale:</string>
-             </property>
-            </widget>
-            <widget class="QSpinBox" name="spinCH4offset">
-             <property name="geometry">
-              <rect>
-               <x>60</x>
-               <y>40</y>
-               <width>91</width>
-               <height>27</height>
-              </rect>
-             </property>
-             <property name="specialValueText">
-              <string/>
-             </property>
-             <property name="suffix">
-              <string>mV</string>
-             </property>
-             <property name="singleStep">
-              <number>5</number>
-             </property>
-            </widget>
-            <widget class="CustomScaleSpinBox" name="spinScaleCH4">
-             <property name="geometry">
-              <rect>
-               <x>60</x>
-               <y>80</y>
-               <width>91</width>
-               <height>21</height>
-              </rect>
-             </property>
-            </widget>
+               </property>
+               <property name="text">
+                <string>Wavegen</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="labelCH4off">
+               <property name="text">
+                <string>Offset:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QSpinBox" name="spinCH4offset">
+               <property name="specialValueText">
+                <string/>
+               </property>
+               <property name="suffix">
+                <string>mV</string>
+               </property>
+               <property name="singleStep">
+                <number>5</number>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="labelCH4scale">
+               <property name="text">
+                <string>Scale:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="CustomScaleSpinBox" name="spinScaleCH4"/>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>

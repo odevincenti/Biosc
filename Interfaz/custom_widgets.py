@@ -8,6 +8,7 @@ BUFFER_SIZE = 100
 REFRESH_RATE = 10  # Refresh rate in milliseconds
 N_X_DIVS = 15  # Number of divisions in the x axis
 N_Y_DIVS = 10  # Number of divisions in the y axis
+X_AX_PAD = 0.3  # Padding for the x axis
 
 class SerialReader(QtCore.QObject):
     data_received = QtCore.Signal(bytes)
@@ -84,7 +85,7 @@ class SignalPlotter(pg.PlotWidget):
         self.time_scales = self.get_valid_time_scales()
         self.len_time_scales = len(self.time_scales)
         self.init_t_scale = self.time_scales[self.len_time_scales//2]  # 1 ms/div
-        self.setRange(xRange=(0, N_X_DIVS*self.init_t_scale + 0.3*self.init_t_scale), disableAutoRange=True, padding=0)
+        self.setRange(xRange=(0, N_X_DIVS*self.init_t_scale + X_AX_PAD*self.init_t_scale), disableAutoRange=True, padding=0)
 
         # Add a label in the top right corner to indicate the current time scale
         self.time_label = pg.LabelItem(justify='right',
@@ -120,23 +121,21 @@ class SignalPlotter(pg.PlotWidget):
         return sorted(set([mult * unit for mult in multiplyers for unit in units]))
 
     def wheelEvent(self, event):
-
+        """
+        Zoom in or out the x axis based on the mouse wheel event
+        :return: None
+        """
         current_range = self.getViewBox().viewRange()
         old_range = current_range[0]
-        current_scale = (old_range[1] - old_range[0])//N_X_DIVS
-
-        # Find the nearest valid timescale
-        if current_scale in self.time_scales:
-            current_index = self.time_scales.index(current_scale)
-        else:
-            current_index = min(range(self.len_time_scales), key=lambda i: abs(self.time_scales[i] - current_scale))
+        current_scale = (old_range[1] - old_range[0])//(N_X_DIVS + X_AX_PAD) + 1
+        current_index = self.time_scales.index(current_scale)
 
         # Zoom in or out
         delta = event.angleDelta().y()
         new_index = current_index + (1 if delta < 0 else -1)
         new_index = max(0, min(new_index, self.len_time_scales - 1))
         new_scale = self.time_scales[new_index]
-        new_x_range = (0, N_X_DIVS*new_scale + 0.3*new_scale)
+        new_x_range = (0, new_scale*(N_X_DIVS + X_AX_PAD))
 
         # Update range, and set the label
         self.setRange(xRange=new_x_range, padding=0)
@@ -144,36 +143,39 @@ class SignalPlotter(pg.PlotWidget):
         event.accept()
 
     def update_time_label_and_ticks(self, current_scale):
-        # Indicate time in the appropriate units (base is us)
+        """
+        Update the time label and ticks based on the current time scale
+        :param current_scale: Current time scale in microseconds
+        :return:
+        """
         if current_scale >= 1_000_000:
-            tick_multiplyer = 1_000_000
+            tick_multiplier = 1_000_000
             mult_str = ''
 
         elif current_scale >= 1_000:
-            tick_multiplyer = 1_000
+            tick_multiplier = 1_000
             mult_str = 'm'
         else:
-            tick_multiplyer = 1
+            tick_multiplier = 1
             mult_str = '\u03BC'
 
-        self.time_label.setText(f"{current_scale//tick_multiplyer} {mult_str}s/div")
+        self.time_label.setText(f"{current_scale//tick_multiplier} {mult_str}s/div")
 
         # Set the ticks
         x_axis = self.getAxis('bottom')
         x_ticks_pos = [i*current_scale for i in range(N_X_DIVS + 1)]
-        x_ticks_labels = [f"{i*current_scale//tick_multiplyer}" for i in range(N_X_DIVS + 1)]
+        x_ticks_labels = [f"{i*current_scale//tick_multiplier}" for i in range(N_X_DIVS + 1)]
         x_ticks_labels[-1] = f"[{mult_str}s]"
         x_axis.setTicks([list(zip(x_ticks_pos, x_ticks_labels))])
-
 
     def set_trigger_line(self):
         # Add the line to the plot, above all other plot lines, and lock it at the top layer
         self.addItem(self.triggerLine)
-        self.triggerLine.setZValue(float('inf'))  # Set to the highest possible z value
-        self.triggerLine.setFlag(pg.GraphicsObject.ItemIgnoresParentOpacity, True)  # Ensure it stays on top
+        self.triggerLine.setZValue(10)  # Set to the highest possible z value
 
     def remove_trigger_line(self):
         self.removeItem(self.triggerLine)
+
 
 def main():
     pass
