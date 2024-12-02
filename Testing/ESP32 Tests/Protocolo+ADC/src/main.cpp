@@ -11,6 +11,7 @@
 char receivedChars[MAX_CHARS];
 boolean newData = false;
 bool blink = false;
+bool running = false;
 long m_signal[SIGNAL_LEN];  
 enum channels {CH1 = 1, CH2};//, CH3, CH4};
 bool channel_en[CHANNEL_N] = {1, 1};//, 1, 1};
@@ -20,7 +21,7 @@ typedef struct ch_range {
 } ch_range;
 ch_range channel_range[CHANNEL_N] = {{.min=0.1, .max=2.6}, {.min=1, .max=12}};//, {.min=0, .max=0},{.min=0, .max=0}, };
 
-hw_timer_t * timer = NULL;
+hw_timer_t * sample_timer = NULL;
 portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
  
 // Potentiometer is connected to GPIO 34 (Analog ADC1_CH6) 
@@ -52,10 +53,10 @@ void setup()
     init_Adc();
     pinMode(LED_BUILTIN, OUTPUT);
   	Serial.begin(BAUD_RATE);    // open serial port
-    timer = timerBegin(0, 80, true);
-    timerAttachInterrupt(timer, &onTimer, true);
-    timerAlarmWrite(timer, 100, true);
-    timerAlarmEnable(timer);
+    sample_timer = timerBegin(0, 80, true);
+    timerAttachInterrupt(sample_timer, &onTimer, true);
+    timerAlarmWrite(sample_timer, 200, true);
+    timerAlarmEnable(sample_timer);
 }
 
 void send_signal(int ix, bool start){
@@ -98,7 +99,7 @@ void send_signal(int ix, bool start){
 void loop()
 {
     newData = recvWithStartEndMarkers(&receivedChars[0], &newData);
-    if (newData || blink) {
+    if (newData || blink || running) {
 #ifdef DEBUG
 		Serial.println(receivedChars);
 #endif
@@ -116,20 +117,26 @@ void loop()
             delay(1000);
         } else if (receivedChars[0] == 'M' && receivedChars[1] == 'S'){
             blink = false;
-            Serial.println("Sending Signal");
+            // Serial.println("Sending Signal");
             send_signal(ix, start);
         } else if (receivedChars[0] == 'T'){
             Serial.print("Test\n");
         } else if (receivedChars[0] == 'R'){
-            Serial.print("Run\n");
+            // Serial.print("Run\n");
+            running = true;
         // } else if (receivedChars[0] == 'S' && receivedChars[1] == '1'){
         //     Serial.print("Single\n");
         } else if (receivedChars[0] == 'S'){
-            Serial.print("Stop\n");
+            running = false;
+            // Serial.print("Stop\n");
         }
 
 		newData = false;
 
+    }
+
+    if (running && !start){
+        send_signal(ix, start);
     }
 
 }
