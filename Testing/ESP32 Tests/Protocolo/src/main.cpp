@@ -10,6 +10,7 @@
 char receivedChars[MAX_CHARS];
 boolean newData = false;
 bool blink = false;
+bool running = false;
 double m_signal[SIGNAL_LEN];  
 enum channels {CH1 = 1, CH2, CH3, CH4};
 bool channel_en[CHANNEL_N] = {1, 1, 1, 1};
@@ -49,10 +50,9 @@ void send_signal(){
     Serial.print(msg);
 }
 
-void loop()
-{
+void loop(){
     newData = recvWithStartEndMarkers(&receivedChars[0], &newData);
-    if (newData || blink) {
+    if (newData || blink || running){ 
 #ifdef DEBUG
 		Serial.println(receivedChars);
 #endif
@@ -74,16 +74,16 @@ void loop()
         } else if (receivedChars[0] == 'T'){
             Serial.print("Test");
         } else if (receivedChars[0] == 'R'){
-            Serial.print("Run");
+            if (!running){
+                running = true;
+            }
+            send_signal();
         } else if (receivedChars[0] == 'S'){
+            running = false;
             Serial.print("Stop");
         } else if (receivedChars[0] == 'S1'){
             Serial.print("Single");
-        } else if (receivedChars[0] == 'R'){
-            Serial.print("Run");
         }
-
-
 		newData = false;
 
     }
