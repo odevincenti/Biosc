@@ -1,12 +1,14 @@
 import threading
 import sys
-
+import queue
 import serial.serialutil
 from serial import Serial
 from serial.tools import list_ports
 
 BAUD_RATE = 9600
 SERIAL_RECOGNIZER = "USB to UART Bridge"
+biosc_queue = queue.Queue()
+stdin_queue = queue.Queue()
 
 
 class Commands:
@@ -51,6 +53,10 @@ class BioscSerial:
         except serial.serialutil.SerialException:
             self.serial_con = None
 
+        # Blink to indicate connection
+        self.write(Commands.BLINK)
+        self.write(Commands.LOW)
+
     @staticmethod
     def find_port():
         ports = list(list_ports.comports())
@@ -61,9 +67,11 @@ class BioscSerial:
             print('No ESP32 found')
             return None
 
-    def write(self, command):
+    def write(self, command: str, *args: str):
+        if args:
+            command = f"{command}-{'-'.join(args)}"
         self.serial_con.write(f"<{command}>".encode())
-        self.serial_con.readline() # Clear buffer
+        # self.serial_con.readline() # Clear buffer
 
     def _readline(self):
         return self.serial_con.readline().decode()
@@ -71,78 +79,101 @@ class BioscSerial:
     def close(self):
         self.serial_con.close()
 
-    def read_message(self, verbose=False):
+    def read_message(self):
         message = self._readline()
-        # msg_strings = message.split('-')
-        # command = msg_strings[0]
-        # data = msg_strings[1]
-        #
-        # self.command = command
-        # self.data = data
+        if not message:
+            return None, None
+        try:
+            msg_strings = message.split('-')
+            command = msg_strings[0]
+            data = msg_strings[1]
+            self.command = command
+            self.data = data
+            return command, data
+        except (IndexError, ValueError, TypeError):
+            self.data = None
+            return None, None
 
 
-def stream_serial_data(serial_con: BioscSerial) -> bool:
+def get_biosc_msg(serial_con: BioscSerial):
     """
-    Read a single message from the ESP through serial
+    This function is meant to be used in a separate thread to read the messages from the serial connection,
+    and add them to the queue
     :param serial_con:
-    :return:
     """
-    serial_con.read_message()
-    if serial_con.data is None:
-        return False
-    sys.stdout.write(serial_con.data)
-    sys.stdout.flush()
-    return True
+    global biosc_queue
+    while True:
+        command, data = serial_con.read_message()
+        if command is None:
+            continue
+        biosc_queue.put((command, data))
 
 
-def manage_input(serial_con: BioscSerial):
+def get_stdin():
     """
-    Read input data and preprocess the message
+    This function is meant to be used in a separate thread to read the messages from the GUI / console and forward them to the serial connection
     """
-    global running
-    global command
-    global args
-    try:
-        control = sys.stdin.readline().strip('\n').split('-')
-        command, *args = control
-        if command not in list(Commands()):
-            raise ValueError(f"Invalid command")
-        elif command in [Commands.STOP, Commands.EXIT]:
-            running = False
-        serial_con.write(command)
+    global stdin_queue
+    while True:
+        try:
+            command, *args = sys.stdin.readline().strip().split()
+            stdin_queue.put((command, args))
+            if command == Commands.EXIT:
+                break
+        except EOFError:
+            break
 
-    except ValueError as e:
-        print(e)
-        sys.stderr.write('3')
-        sys.stderr.flush()
-    except KeyboardInterrupt:
-        running = False
-        command = Commands.EXIT
+
+def handle_new_commands(serial_con: BioscSerial):
+    """
+    Handle the new commands from the queues
+    :param serial_con: BioscSerial object
+    """
+    global biosc_queue
+    global stdin_queue
+
+    while True:
+        # Handle input coming from the GUI / console
+        if not stdin_queue.empty():
+            command, args = stdin_queue.get()
+            serial_con.write(command, *args)
+            if command == Commands.EXIT:
+                break
+
+        # Handle input coming from the serial connection
+        if not biosc_queue.empty():
+            command, data = biosc_queue.get()
+            if command == Commands.MEASURED_SIGNALS:
+                sys.stdout.write(f"{command}-{data}\n")
+                sys.stdout.flush()
+            elif command == Commands.ERROR:
+                sys.stderr.write(f"{command}-{data}\n")
+                sys.stderr.flush()
+            elif command == Commands.EXIT:
+                break
 
 
 def main():
-    """
-    Main function to run the serial communication with the ESP32
-    Translates the commands from the GUI to the ESP32
-    If running this script directly, the commands should be entered manually (for testing purposes)
-    :return:
-    """
-    global running
-    global command
-    global args
-
-    biosc_serial = BioscSerial()
-    if biosc_serial.serial_con is None:
+    serial_con = BioscSerial()
+    if serial_con.serial_con is None:
         sys.exit(1)
-    else:
-        print('Serial connection established')
 
-    running = True
-    while running:
-        pass
+    print(f"Connected to {serial_con.port}")
+
+    # Start the threads
+    biosc_thread = threading.Thread(target=get_biosc_msg, args=(serial_con,))
+    stdin_thread = threading.Thread(target=get_stdin)
+    biosc_thread.daemon = True
+    stdin_thread.daemon = True
+    biosc_thread.start()
+    stdin_thread.start()
+
+    handle_new_commands(serial_con)
+
+    # Close the serial connection on exit
+    serial_con.write(Commands.STOP)
+    serial_con.close()
+
 
 if __name__ == '__main__':
-    command = None
-    running = False
-    args = None
     main()

@@ -1,7 +1,8 @@
 import sys
 from PySide6 import QtWidgets, QtCore, QtSerialPort
-from Interfaz.custom_widgets import SignalPlotter, REFRESH_RATE, DATA_LEN, BAUD_RATE, SerialReader
+from Interfaz.custom_widgets import SignalPlotter, REFRESH_RATE, BAUD_RATE, SerialReader
 
+DATA_LEN = 1000
 
 class Oscilloscope(QtWidgets.QMainWindow):
     def __init__(self):

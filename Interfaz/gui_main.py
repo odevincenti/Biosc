@@ -8,7 +8,7 @@ from Interfaz.comm_protocol import Commands
 from template_ui import Ui_Bioscope
 from comm_protocol import BioscSerial
 
-TEST_SIG_LEN = 2_000_000
+TEST_SIG_LEN = 2_000
 PROCESS_PATH = 'comm_protocol.py'
 
 
@@ -45,8 +45,7 @@ class MainWindow(QMainWindow, Ui_Bioscope):
 
     @Slot()
     def on_click_push_run(self):
-        self.process.write(f"{Commands.MEASURED_SIGNALS}\n".encode())
-
+        self.process.write(f"{Commands.RUN}\n".encode())
 
     def start_process(self):
         self.process.start('python', [self.process_path])
@@ -61,13 +60,16 @@ class MainWindow(QMainWindow, Ui_Bioscope):
 
     def handle_stdout(self):
         message = self.process.readAllStandardOutput().data().decode()
-        if not message:
+        if not message or '-' not in message:
             pass
         command, data = message.split('-')
         if command == Commands.MEASURED_SIGNALS:
-            self.CH1_data = np.array(json.loads(data)[0]['signal'])
+            new_data = np.array(json.loads(data)[0]['signal'])
+            print(new_data)
+            self.CH1_data = np.concatenate((self.CH1_data, new_data))
+            if len(self.CH1_data) > TEST_SIG_LEN:
+                self.CH1_data = self.CH1_data[-TEST_SIG_LEN:]
             self.update_plot()
-        print(message)
 
     def update_plot(self):
         scale = self.spinScaleCH1.value()

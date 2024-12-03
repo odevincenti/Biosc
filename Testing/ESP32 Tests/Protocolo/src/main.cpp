@@ -28,7 +28,7 @@ void setup()
   	Serial.begin(BAUD_RATE);    // open serial port
     int i;
     for(i = 0; i < SIGNAL_LEN; i++){    // generate signal
-	    m_signal[i] = i;
+	    m_signal[i] = 100 * i;
     }
 }
 
@@ -57,34 +57,34 @@ void loop(){
 		Serial.println(receivedChars);
 #endif
         if (receivedChars[0] == 'H'){
+            running = false;
             blink = false;
             digitalWrite(LED_BUILTIN, HIGH);
         } else if (receivedChars[0] == 'L'){
+            running = false;
             blink = false;
             digitalWrite(LED_BUILTIN, LOW);
         } else if (blink || receivedChars[0] == 'B'){
+            running = false;
             blink = true;
             digitalWrite(LED_BUILTIN, HIGH);
-            delay(1000);
+            delay(500);
             digitalWrite(LED_BUILTIN, LOW);
-            delay(1000);
+            delay(500);
         } else if (receivedChars[0] == 'M' && receivedChars[1] == 'S'){
+            running = false;
             blink = false;
             send_signal();
         } else if (receivedChars[0] == 'T'){
+            running = false;
             Serial.print("Test");
         } else if (receivedChars[0] == 'R'){
-            if (!running){
-                running = true;
-            }
+            running = true;
             send_signal();
         } else if (receivedChars[0] == 'S'){
             running = false;
             Serial.print("Stop");
-        } else if (receivedChars[0] == 'S1'){
-            Serial.print("Single");
-        }
-		newData = false;
+        } newData = false;
 
     }
 }
