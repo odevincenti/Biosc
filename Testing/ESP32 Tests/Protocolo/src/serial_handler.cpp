@@ -19,7 +19,7 @@ boolean recvWithStartEndMarkers(char* receivedChars, boolean* newData) {
                 receivedChars[ndx] = rc;
                 ndx++;
                 if (ndx >= MAX_CHARS) {
-					Serial.write("Error: Maximun char count exceeded");
+					Serial.write("Error: Maximum char count exceeded");
 					recvInProgress = false;
 					ndx = 0;
                 }

@@ -3,7 +3,7 @@
 #include "utils.h"
 
 // #define LED_BUILTIN 2
-#define DEBUG
+// #define DEBUG
 #define SIGNAL_LEN  100
 #define CHANNEL_N   4
 
@@ -11,7 +11,7 @@ char receivedChars[MAX_CHARS];
 boolean newData = false;
 bool blink = false;
 bool running = false;
-double m_signal[SIGNAL_LEN];  
+int m_signal[SIGNAL_LEN];  
 enum channels {CH1 = 1, CH2, CH3, CH4};
 bool channel_en[CHANNEL_N] = {1, 1, 1, 1};
 typedef struct ch_range {
@@ -42,8 +42,8 @@ void send_signal(){
             }
             msg = msg + "{\"channel\":" + String(ch+1) + ",";
             msg = msg + "\"range\":[" + String(channel_range[ch].min) + "," + String(channel_range[ch].max) + "],";
-            msg = msg + "\"signal\":[" + array2String(m_signal, SIGNAL_LEN);
-            msg = msg + "]}";
+            msg = msg + "\"signal\":[" + array2String(m_signal, SIGNAL_LEN) + "]";
+            msg = msg + "}";
         }
     }
     msg = msg + "]-\n";
