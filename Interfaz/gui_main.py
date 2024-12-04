@@ -24,8 +24,9 @@ class MainWindow(QMainWindow, Ui_Bioscope):
         self.start_process()
 
         # Dummy signals for testing
-        self.dummy_signal = 100 * np.sin(2 * np.pi * 1e-4 * np.arange(TEST_SIG_LEN)) + 5 * np.random.normal(
-            size=TEST_SIG_LEN)
+        # self.dummy_signal = 100 * np.sin(2 * np.pi * 1e-4 * np.arange(TEST_SIG_LEN)) + 5 * np.random.normal(
+        #     size=TEST_SIG_LEN)
+        self.dummy_signal = np.zeros(TEST_SIG_LEN)
         self.CH1_data = self.dummy_signal
         self.update_plot()
 
@@ -64,12 +65,15 @@ class MainWindow(QMainWindow, Ui_Bioscope):
             pass
         command, data = message.split('-')
         if command == Commands.MEASURED_SIGNALS:
-            new_data = np.array(json.loads(data)[0]['signal'])
-            print(new_data)
-            self.CH1_data = np.concatenate((self.CH1_data, new_data))
-            if len(self.CH1_data) > TEST_SIG_LEN:
-                self.CH1_data = self.CH1_data[-TEST_SIG_LEN:]
-            self.update_plot()
+            try:
+                new_data = np.array(json.loads(data)[0]['signal'])
+                print(new_data)
+                self.CH1_data = np.concatenate((self.CH1_data, new_data))
+                if len(self.CH1_data) > TEST_SIG_LEN:
+                    self.CH1_data = self.CH1_data[-TEST_SIG_LEN:]
+                self.update_plot()
+            except (json.JSONDecodeError, ValueError):
+                print(data)
 
     def update_plot(self):
         scale = self.spinScaleCH1.value()

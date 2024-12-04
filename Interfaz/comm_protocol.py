@@ -3,9 +3,10 @@ import sys
 import queue
 import serial.serialutil
 from serial import Serial
+from serial.serialutil import SerialException
 from serial.tools import list_ports
 
-BAUD_RATE = 9600
+BAUD_RATE = 961_200
 SERIAL_RECOGNIZER = "USB to UART Bridge"
 biosc_queue = queue.Queue()
 stdin_queue = queue.Queue()
@@ -74,7 +75,10 @@ class BioscSerial:
         # self.serial_con.readline() # Clear buffer
 
     def _readline(self):
-        return self.serial_con.readline().decode()
+        try:
+            return self.serial_con.readline().decode()
+        except SerialException:
+            return ''
 
     def close(self):
         self.serial_con.close()
@@ -82,6 +86,7 @@ class BioscSerial:
     def read_message(self):
         message = self._readline()
         if not message:
+            print(message)
             return None, None
         try:
             msg_strings = message.split('-')
@@ -120,8 +125,8 @@ def get_stdin():
             stdin_queue.put((command, args))
             if command == Commands.EXIT:
                 break
-        except EOFError:
-            break
+        except (EOFError, ValueError):
+            continue
 
 
 def handle_new_commands(serial_con: BioscSerial):
@@ -163,11 +168,10 @@ def main():
     # Start the threads
     biosc_thread = threading.Thread(target=get_biosc_msg, args=(serial_con,))
     stdin_thread = threading.Thread(target=get_stdin)
-    biosc_thread.daemon = True
-    stdin_thread.daemon = True
     biosc_thread.start()
     stdin_thread.start()
 
+    # Actual main functionality
     handle_new_commands(serial_con)
 
     # Close the serial connection on exit
