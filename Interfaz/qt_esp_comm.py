@@ -4,7 +4,9 @@ from PySide6.QtCore import QObject, Signal, Slot
 from PySide6.QtWidgets import QApplication
 import sys
 
-BAUD_RATE = 961_200
+from Interfaz.comm_protocol import Commands
+
+BAUD_RATE = 115200
 SERIAL_RECOGNIZER = "USB to UART Bridge"
 
 
@@ -39,10 +41,12 @@ class ESPSerial(QObject):
     def read_data(self):
         """Read data asynchronously when available."""
         while self.serial_port.canReadLine():
-            data = self.serial_port.readLine().data().decode("utf-8").strip()
+            data = self.serial_port.readLine().data().decode("utf-8").strip()[:-1]
             self.data_received.emit(data)
 
-    def write_data(self, command: str):
+    def send_command(self, command: str, *args: str):
+        if args:
+            command = f"{command}-{'-'.join(args)}"
         """Send data to the ESP32."""
         if self.serial_port.isOpen():
             self.serial_port.write(f"<{command}>\n".encode("utf-8"))
@@ -52,6 +56,7 @@ class ESPSerial(QObject):
 
     def close(self):
         """Close the serial port."""
+        self.send_command(Commands.STOP)
         self.serial_port.close()
 
 
@@ -93,7 +98,7 @@ class MainWindow(QMainWindow):
     def send_command(self):
         command = self.command_input.text().strip()
         if command:
-            self.esp_serial.write_data(command)
+            self.esp_serial.send_command(command)
             self.command_input.clear()
 
     @Slot(str)

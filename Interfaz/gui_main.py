@@ -2,15 +2,15 @@ import sys
 import json
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import QProcess, Slot
+from PySide6.QtCore import Slot
 import numpy as np
 from Interfaz.comm_protocol import Commands
 from template_ui import Ui_Bioscope
-from comm_protocol import BioscSerial
+from qt_esp_comm import ESPSerial
 
-TEST_SIG_LEN = 2_000
 PROCESS_PATH = 'comm_protocol.py'
-
+SAMPLING_RATE = 10_000
+MAX_SIG_LEN = 505 * SAMPLING_RATE # 30 seconds
 
 class MainWindow(QMainWindow, Ui_Bioscope):
     def __init__(self):
@@ -19,17 +19,17 @@ class MainWindow(QMainWindow, Ui_Bioscope):
         self.setWindowTitle('Bioscope')
 
         # Setup process for connection to ESP32
-        self.process = QProcess(self)
-        self.process_path = PROCESS_PATH
-        self.start_process()
+        self.esp_serial = ESPSerial()
+        self.esp_serial.data_received.connect(self.handle_newdata)
 
         # Dummy signals for testing
-        # self.dummy_signal = 100 * np.sin(2 * np.pi * 1e-4 * np.arange(TEST_SIG_LEN)) + 5 * np.random.normal(
-        #     size=TEST_SIG_LEN)
-        self.dummy_signal = np.zeros(TEST_SIG_LEN)
+        # self.dummy_signal = 100 * np.sin(2 * np.pi * 1e-4 * np.arange(MAX_SIG_LEN)) + 5 * np.random.normal(
+        #     size=MAX_SIG_LEN)
+        self.dummy_signal = np.zeros(MAX_SIG_LEN)
         self.CH1_data = self.dummy_signal
         self.update_plot()
 
+        # Run button
         self.buttonRunStop.clicked.connect(self.on_click_push_run)
 
         # Connect the spinbox to the plot
@@ -46,43 +46,52 @@ class MainWindow(QMainWindow, Ui_Bioscope):
 
     @Slot()
     def on_click_push_run(self):
-        self.process.write(f"{Commands.RUN}\n".encode())
+        """
+        Start running
+        """
+        self.esp_serial.send_command(Commands.RUN)
 
-    def start_process(self):
-        self.process.start('python', [self.process_path])
 
-        started = self.process.waitForStarted(500)
-        if not started:
-            sys.exit(1)
+    @Slot(str)
+    def handle_newdata(self, message: str):
+        """
+        Read incoming data from the ESP32 process
+        :return:
+        """
+        try:
+            command, data = message.split('-')
+        except ValueError:
+            print(80*'=')
+            print('SPLIT ERROR')
+            print(message)
+            return
 
-        # Automatically read stdout and stderr when something new shows up
-        self.process.readyReadStandardOutput.connect(self.handle_stdout)
-        # self.process.readyReadStandardError.connect(self.handle_stderr)
-
-    def handle_stdout(self):
-        message = self.process.readAllStandardOutput().data().decode()
-        if not message or '-' not in message:
-            pass
-        command, data = message.split('-')
         if command == Commands.MEASURED_SIGNALS:
             try:
                 new_data = np.array(json.loads(data)[0]['signal'])
-                print(new_data)
                 self.CH1_data = np.concatenate((self.CH1_data, new_data))
-                if len(self.CH1_data) > TEST_SIG_LEN:
-                    self.CH1_data = self.CH1_data[-TEST_SIG_LEN:]
+                if len(self.CH1_data) > MAX_SIG_LEN:
+                    self.CH1_data = self.CH1_data[-MAX_SIG_LEN:]
                 self.update_plot()
             except (json.JSONDecodeError, ValueError):
+                print(80*'-')
+                print('DECODING ERROR')
                 print(data)
+                print(80*'-')
 
     def update_plot(self):
         scale = self.spinScaleCH1.value()
         self.plotWidget.clear()
-        self.plotWidget.plot(self.CH1_data / scale, pen=(255, 0, 0))
+        time_scale = self.plotWidget.getViewBox().viewRange()[0]
+        n_samples = int((time_scale[1] - time_scale[0]) * SAMPLING_RATE / 1_000_000) # in ms
+        x_axis = np.linspace(time_scale[0], time_scale[1], n_samples)
+        plot_sig = self.CH1_data[-len(x_axis):] / scale
+        self.plotWidget.plot(x_axis, plot_sig, pen=(255, 0, 0))
 
-    # Kill process when closing the window
     def closeEvent(self, event):
-        self.process.kill()
+        """Handle window close event."""
+        self.esp_serial.send_command(Commands.STOP)
+        self.esp_serial.close()
         event.accept()
 
     ###################################################################################
