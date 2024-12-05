@@ -6,7 +6,7 @@
 #include <Arduino.h>
 
 #define MAX_CHARS	32
-#define BAUD_RATE	921600
+#define BAUD_RATE	115200
 
 // Declaración de funciones o clases
 

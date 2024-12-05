@@ -5,7 +5,7 @@
 // #define LED_BUILTIN 2
 // #define DEBUG
 #define SIGNAL_LEN  100
-#define CHANNEL_N   4
+#define CHANNEL_N  2
 
 char receivedChars[MAX_CHARS];
 boolean newData = false;
@@ -13,12 +13,12 @@ bool blink = false;
 bool running = false;
 int m_signal[SIGNAL_LEN];  
 enum channels {CH1 = 1, CH2, CH3, CH4};
-bool channel_en[CHANNEL_N] = {1, 1, 1, 1};
+bool channel_en[CHANNEL_N] = {1, 1};
 typedef struct ch_range {
     double min;
     double max;
 } ch_range;
-ch_range channel_range[CHANNEL_N] = {{.min=0.1, .max=2.6}, {.min=0, .max=0}, {.min=1, .max=12}, {.min=0, .max=0}};
+ch_range channel_range[CHANNEL_N] = {{.min=0.1, .max=2.6}, {.min=0, .max=0}};
 
 using namespace std;
 
