@@ -22,15 +22,17 @@ ch_range channel_range[CHANNEL_N] = {{.min=0.1, .max=2.6}, {.min=0, .max=0}};
 
 using namespace std;
 
+
 void setup()
 {
   pinMode(LED_BUILTIN, OUTPUT);
   	Serial.begin(BAUD_RATE);    // open serial port
     int i;
-    for(i = 0; i < SIGNAL_LEN; i++){    // generate signal
-	    m_signal[i] = 100 * i;
+    for(i = 0; i < SIGNAL_LEN; i++){    // generate sine wave signal
+        m_signal[i] = 100 * sin(2 * M_PI * i / SIGNAL_LEN) + 100;
     }
 }
+
 
 void send_signal(){
     String msg = "MS-[";
