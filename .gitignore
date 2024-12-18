@@ -9,3 +9,4 @@ Interfaz/__pycache__
 *.plt
 *.__pycache__
 *.pyc
+/.idea
