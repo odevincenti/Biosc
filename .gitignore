@@ -12,3 +12,4 @@ Interfaz/__pycache__
 /.idea
 **/build/*
 **/History/*
+Testing/ESP32 Tests/ESP-IDF Examples/*
