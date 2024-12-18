@@ -450,7 +450,7 @@ color: rgb(0, 0, 0);</string>
                 <string>mV</string>
                </property>
                <property name="minimum">
-                <number>0</number>
+                <number>-1000</number>
                </property>
                <property name="maximum">
                 <number>1000</number>
@@ -521,7 +521,7 @@ color: rgb(0, 0, 0);</string>
                 <string>mV</string>
                </property>
                <property name="minimum">
-                <number>0</number>
+                <number>-1000</number>
                </property>
                <property name="maximum">
                 <number>1000</number>
@@ -592,7 +592,7 @@ color: rgb(0, 0, 0);</string>
                 <string>mV</string>
                </property>
                <property name="minimum">
-                <number>0</number>
+                <number>-1000</number>
                </property>
                <property name="maximum">
                 <number>1000</number>
@@ -661,6 +661,12 @@ color: rgb(0, 0, 0);</string>
                </property>
                <property name="suffix">
                 <string>mV</string>
+               </property>
+               <property name="minimum">
+                <number>-1000</number>
+               </property>
+               <property name="maximum">
+                <number>1000</number>
                </property>
                <property name="singleStep">
                 <number>5</number>

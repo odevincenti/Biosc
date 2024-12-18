@@ -1,10 +1,11 @@
 import sys
 import json
+from pyqtgraph import mkPen
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Slot
 import numpy as np
-from Interfaz.comm_protocol import Commands
+from comm_protocol import Commands
 from template_ui import Ui_Bioscope
 from qt_esp_comm import ESPSerial
 
@@ -21,6 +22,9 @@ class MainWindow(QMainWindow, Ui_Bioscope):
         # Setup process for connection to ESP32
         self.esp_serial = ESPSerial()
         self.esp_serial.data_received.connect(self.handle_newdata)
+
+        # Plot utilities
+        self.pen_CH1 = mkPen(color=(255, 0, 0), width=2)
 
         # Dummy signals for testing
         # self.dummy_signal = 100 * np.sin(2 * np.pi * 1e-4 * np.arange(MAX_SIG_LEN)) + 5 * np.random.normal(
@@ -81,12 +85,13 @@ class MainWindow(QMainWindow, Ui_Bioscope):
 
     def update_plot(self):
         scale = self.spinScaleCH1.value()
+        offset = self.spinCH1offset.value()
         self.plotWidget.clear()
         time_scale = self.plotWidget.getViewBox().viewRange()[0]
         n_samples = int((time_scale[1] - time_scale[0]) * SAMPLING_RATE / 1_000_000) # in ms
         x_axis = np.linspace(time_scale[0], time_scale[1], n_samples)
-        plot_sig = self.CH1_data[-len(x_axis):] / scale
-        self.plotWidget.plot(x_axis, plot_sig, pen=(255, 0, 0))
+        plot_sig = (self.CH1_data[-len(x_axis):] + offset) / scale
+        self.plotWidget.plot(x_axis, plot_sig, pen=self.pen_CH1)
 
     def closeEvent(self, event):
         """Handle window close event."""

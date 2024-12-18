@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'template.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.8.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -290,7 +290,7 @@ class Ui_Bioscope(object):
 
         self.spinCH1offset = QSpinBox(self.frameCH1)
         self.spinCH1offset.setObjectName(u"spinCH1offset")
-        self.spinCH1offset.setMinimum(0)
+        self.spinCH1offset.setMinimum(-1000)
         self.spinCH1offset.setMaximum(1000)
         self.spinCH1offset.setSingleStep(5)
 
@@ -332,7 +332,7 @@ class Ui_Bioscope(object):
 
         self.spinCH2offset = QSpinBox(self.frameCH2)
         self.spinCH2offset.setObjectName(u"spinCH2offset")
-        self.spinCH2offset.setMinimum(0)
+        self.spinCH2offset.setMinimum(-1000)
         self.spinCH2offset.setMaximum(1000)
         self.spinCH2offset.setSingleStep(5)
 
@@ -374,7 +374,7 @@ class Ui_Bioscope(object):
 
         self.spinCH3offset = QSpinBox(self.frameCH3)
         self.spinCH3offset.setObjectName(u"spinCH3offset")
-        self.spinCH3offset.setMinimum(0)
+        self.spinCH3offset.setMinimum(-1000)
         self.spinCH3offset.setMaximum(1000)
         self.spinCH3offset.setSingleStep(5)
 
@@ -416,6 +416,8 @@ class Ui_Bioscope(object):
 
         self.spinCH4offset = QSpinBox(self.frameCH4)
         self.spinCH4offset.setObjectName(u"spinCH4offset")
+        self.spinCH4offset.setMinimum(-1000)
+        self.spinCH4offset.setMaximum(1000)
         self.spinCH4offset.setSingleStep(5)
 
         self.formLayout_4.setWidget(1, QFormLayout.FieldRole, self.spinCH4offset)
