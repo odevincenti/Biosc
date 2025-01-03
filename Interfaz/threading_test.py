@@ -1,6 +1,6 @@
 import sys
 from PySide6 import QtWidgets, QtCore, QtSerialPort
-from Interfaz.custom_widgets import SignalPlotter, REFRESH_RATE, BAUD_RATE, SerialReader
+from custom_widgets import SignalPlotter, REFRESH_RATE, BAUD_RATE, SerialReader
 
 DATA_LEN = 1000
 
