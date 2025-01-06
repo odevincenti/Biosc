@@ -8,6 +8,11 @@ X_AX_PAD = 0.3  # Padding for the x axis
 
 
 class CustomScaleSpinBox(QtWidgets.QSpinBox):
+    """
+    Custom spin box for the vertical scale
+    The effect of this scale is to define a multiplyer that resizes the signal
+    The plot's y scale is fixed to 10 divisions, from -5 to 5. The signal is then multiplied by the scale
+    """
     def __init__(self, parent=None):
         super(CustomScaleSpinBox, self).__init__(parent)
         self.units = [1, 2, 5, 10]

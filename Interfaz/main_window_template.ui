@@ -403,7 +403,7 @@ color: rgb(0, 0, 0);</string>
            <enum>QLayout::SizeConstraint::SetNoConstraint</enum>
           </property>
           <item>
-           <widget class="QFrame" name="frameCH1">
+           <widget class="ChannelFrame" name="frameCH1">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -417,64 +417,22 @@ color: rgb(0, 0, 0);</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border-color: rgb(237, 51, 59);</string>
+             <string notr="true"/>
             </property>
             <property name="frameShape">
              <enum>QFrame::Shape::NoFrame</enum>
             </property>
-            <layout class="QFormLayout" name="formLayout_3">
-             <item row="0" column="0" colspan="2">
-              <widget class="QCheckBox" name="checkCH1">
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(246, 97, 81);
-color: rgb(0, 0, 0);</string>
-               </property>
-               <property name="text">
-                <string>Channel 1</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="labelCH1offset">
-               <property name="text">
-                <string>Offset:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSpinBox" name="spinCH1offset">
-               <property name="specialValueText">
-                <string/>
-               </property>
-               <property name="suffix">
-                <string>mV</string>
-               </property>
-               <property name="minimum">
-                <number>-1000</number>
-               </property>
-               <property name="maximum">
-                <number>1000</number>
-               </property>
-               <property name="singleStep">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="labelCH1scale">
-               <property name="text">
-                <string>Scale:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="CustomScaleSpinBox" name="spinScaleCH1"/>
-             </item>
-            </layout>
+            <property name="channelName" stdset="0">
+             <string>Channel 1</string>
+            </property>
+            <property name="frameColor" stdset="0">
+             <string>rgb(246, 97, 81)</string>
+            </property>
+            <layout class="QFormLayout" name="formLayout_3"/>
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="frameCH2">
+           <widget class="ChannelFrame" name="frameCH2">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -488,64 +446,22 @@ color: rgb(0, 0, 0);</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border-color: rgb(143, 240, 164);</string>
+             <string notr="true"/>
             </property>
             <property name="frameShape">
              <enum>QFrame::Shape::NoFrame</enum>
             </property>
-            <layout class="QFormLayout" name="formLayout_2">
-             <item row="0" column="0" colspan="2">
-              <widget class="QCheckBox" name="checkCH2">
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(249, 240, 107);
-color: rgb(0, 0, 0);</string>
-               </property>
-               <property name="text">
-                <string>Channel 2</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="labelCH2offset">
-               <property name="text">
-                <string>Offset:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSpinBox" name="spinCH2offset">
-               <property name="specialValueText">
-                <string/>
-               </property>
-               <property name="suffix">
-                <string>mV</string>
-               </property>
-               <property name="minimum">
-                <number>-1000</number>
-               </property>
-               <property name="maximum">
-                <number>1000</number>
-               </property>
-               <property name="singleStep">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="labelCH2scale">
-               <property name="text">
-                <string>Scale:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="CustomScaleSpinBox" name="spinScaleCH2"/>
-             </item>
-            </layout>
+            <property name="channelName" stdset="0">
+             <string>Channel 2</string>
+            </property>
+            <property name="frameColor" stdset="0">
+             <string>rgb(143, 240, 164)</string>
+            </property>
+            <layout class="QFormLayout" name="formLayout_2"/>
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="frameCH3">
+           <widget class="ChannelFrame" name="frameCH3">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -559,64 +475,23 @@ color: rgb(0, 0, 0);</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border-color: rgb(249, 240, 107);</string>
+             <string notr="true">
+</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::Shape::NoFrame</enum>
             </property>
-            <layout class="QFormLayout" name="formLayout">
-             <item row="0" column="0" colspan="2">
-              <widget class="QCheckBox" name="checkCH3">
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(143, 240, 164);
-color: rgb(0, 0, 0);</string>
-               </property>
-               <property name="text">
-                <string>Channel 3</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="labelCH3offset">
-               <property name="text">
-                <string>Offset:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSpinBox" name="spinCH3offset">
-               <property name="specialValueText">
-                <string/>
-               </property>
-               <property name="suffix">
-                <string>mV</string>
-               </property>
-               <property name="minimum">
-                <number>-1000</number>
-               </property>
-               <property name="maximum">
-                <number>1000</number>
-               </property>
-               <property name="singleStep">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="labelCH3scale">
-               <property name="text">
-                <string>Scale:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="CustomScaleSpinBox" name="spinScaleCH3"/>
-             </item>
-            </layout>
+            <property name="channelName" stdset="0">
+             <string>Channel 3</string>
+            </property>
+            <property name="frameColor" stdset="0">
+             <string>rgb(249, 240, 107)</string>
+            </property>
+            <layout class="QFormLayout" name="formLayout"/>
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="frameCH4">
+           <widget class="ChannelFrame" name="frameCH4">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -630,60 +505,18 @@ color: rgb(0, 0, 0);</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">border-color: rgb(153, 193, 241);</string>
+             <string notr="true"/>
             </property>
             <property name="frameShape">
              <enum>QFrame::Shape::NoFrame</enum>
             </property>
-            <layout class="QFormLayout" name="formLayout_4">
-             <item row="0" column="0" colspan="2">
-              <widget class="QCheckBox" name="checkCH4">
-               <property name="styleSheet">
-                <string notr="true">background-color: rgb(153, 193, 241);
-color: rgb(0, 0, 0);</string>
-               </property>
-               <property name="text">
-                <string>Wavegen</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="labelCH4off">
-               <property name="text">
-                <string>Offset:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="1">
-              <widget class="QSpinBox" name="spinCH4offset">
-               <property name="specialValueText">
-                <string/>
-               </property>
-               <property name="suffix">
-                <string>mV</string>
-               </property>
-               <property name="minimum">
-                <number>-1000</number>
-               </property>
-               <property name="maximum">
-                <number>1000</number>
-               </property>
-               <property name="singleStep">
-                <number>5</number>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="labelCH4scale">
-               <property name="text">
-                <string>Scale:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <widget class="CustomScaleSpinBox" name="spinScaleCH4"/>
-             </item>
-            </layout>
+            <property name="channelName" stdset="0">
+             <string>Channel 4</string>
+            </property>
+            <property name="frameColor" stdset="0">
+             <string>rgb(153, 193, 241)</string>
+            </property>
+            <layout class="QFormLayout" name="formLayout_4"/>
            </widget>
           </item>
          </layout>
@@ -700,7 +533,7 @@ color: rgb(0, 0, 0);</string>
      <x>0</x>
      <y>0</y>
      <width>1107</width>
-     <height>23</height>
+     <height>37</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -737,9 +570,10 @@ color: rgb(0, 0, 0);</string>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>CustomScaleSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header location="global">custom_widgets</header>
+   <class>ChannelFrame</class>
+   <extends>QFrame</extends>
+   <header location="global">channel_frame</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -37,7 +37,7 @@ class MainWindow(QMainWindow, Ui_Bioscope):
         self.buttonRunStop.clicked.connect(self.on_click_push_run)
 
         # Connect the spinbox to the plot
-        self.spinScaleCH1.valueChanged.connect(self.update_plot)
+        self.frameCH1.spinScale.valueChanged.connect(self.update_plot)
 
         # Connect the trigger button to the trigger line method from the plot widget
         self.setup_capture_combo()
@@ -84,8 +84,8 @@ class MainWindow(QMainWindow, Ui_Bioscope):
                 print(80*'-')
 
     def update_plot(self):
-        scale = self.spinScaleCH1.value()
-        offset = self.spinCH1offset.value()
+        scale = self.frameCH1.spinScale.value()
+        offset = self.frameCH1.spinOffset.value()
         self.plotWidget.clear()
         time_scale = self.plotWidget.getViewBox().viewRange()[0]
         n_samples = int((time_scale[1] - time_scale[0]) * SAMPLING_RATE / 1_000_000) # in ms

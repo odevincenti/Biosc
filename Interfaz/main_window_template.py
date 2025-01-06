@@ -16,12 +16,13 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFormLayout,
-    QFrame, QHBoxLayout, QLabel, QLayout,
-    QMainWindow, QMenu, QMenuBar, QPushButton,
-    QSizePolicy, QSpinBox, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFormLayout, QFrame,
+    QHBoxLayout, QLabel, QLayout, QMainWindow,
+    QMenu, QMenuBar, QPushButton, QSizePolicy,
+    QSpinBox, QVBoxLayout, QWidget)
 
-from custom_widgets import (CustomScaleSpinBox, SignalPlotter)
+from channel_frame import ChannelFrame
+from custom_widgets import SignalPlotter
 
 class Ui_Bioscope(object):
     def setupUi(self, Bioscope):
@@ -264,7 +265,7 @@ class Ui_Bioscope(object):
         self.CHVLayout = QVBoxLayout()
         self.CHVLayout.setObjectName(u"CHVLayout")
         self.CHVLayout.setSizeConstraint(QLayout.SizeConstraint.SetNoConstraint)
-        self.frameCH1 = QFrame(self.centralwidget)
+        self.frameCH1 = ChannelFrame(self.centralwidget)
         self.frameCH1.setObjectName(u"frameCH1")
         sizePolicy6 = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Expanding)
         sizePolicy6.setHorizontalStretch(0)
@@ -272,166 +273,46 @@ class Ui_Bioscope(object):
         sizePolicy6.setHeightForWidth(self.frameCH1.sizePolicy().hasHeightForWidth())
         self.frameCH1.setSizePolicy(sizePolicy6)
         self.frameCH1.setMinimumSize(QSize(200, 0))
-        self.frameCH1.setStyleSheet(u"border-color: rgb(237, 51, 59);")
+        self.frameCH1.setStyleSheet(u"")
         self.frameCH1.setFrameShape(QFrame.Shape.NoFrame)
         self.formLayout_3 = QFormLayout(self.frameCH1)
         self.formLayout_3.setObjectName(u"formLayout_3")
-        self.checkCH1 = QCheckBox(self.frameCH1)
-        self.checkCH1.setObjectName(u"checkCH1")
-        self.checkCH1.setStyleSheet(u"background-color: rgb(246, 97, 81);\n"
-"color: rgb(0, 0, 0);")
-
-        self.formLayout_3.setWidget(0, QFormLayout.SpanningRole, self.checkCH1)
-
-        self.labelCH1offset = QLabel(self.frameCH1)
-        self.labelCH1offset.setObjectName(u"labelCH1offset")
-
-        self.formLayout_3.setWidget(1, QFormLayout.LabelRole, self.labelCH1offset)
-
-        self.spinCH1offset = QSpinBox(self.frameCH1)
-        self.spinCH1offset.setObjectName(u"spinCH1offset")
-        self.spinCH1offset.setMinimum(-1000)
-        self.spinCH1offset.setMaximum(1000)
-        self.spinCH1offset.setSingleStep(5)
-
-        self.formLayout_3.setWidget(1, QFormLayout.FieldRole, self.spinCH1offset)
-
-        self.labelCH1scale = QLabel(self.frameCH1)
-        self.labelCH1scale.setObjectName(u"labelCH1scale")
-
-        self.formLayout_3.setWidget(2, QFormLayout.LabelRole, self.labelCH1scale)
-
-        self.spinScaleCH1 = CustomScaleSpinBox(self.frameCH1)
-        self.spinScaleCH1.setObjectName(u"spinScaleCH1")
-
-        self.formLayout_3.setWidget(2, QFormLayout.FieldRole, self.spinScaleCH1)
-
 
         self.CHVLayout.addWidget(self.frameCH1)
 
-        self.frameCH2 = QFrame(self.centralwidget)
+        self.frameCH2 = ChannelFrame(self.centralwidget)
         self.frameCH2.setObjectName(u"frameCH2")
         sizePolicy6.setHeightForWidth(self.frameCH2.sizePolicy().hasHeightForWidth())
         self.frameCH2.setSizePolicy(sizePolicy6)
         self.frameCH2.setMinimumSize(QSize(200, 0))
-        self.frameCH2.setStyleSheet(u"border-color: rgb(143, 240, 164);")
+        self.frameCH2.setStyleSheet(u"")
         self.frameCH2.setFrameShape(QFrame.Shape.NoFrame)
         self.formLayout_2 = QFormLayout(self.frameCH2)
         self.formLayout_2.setObjectName(u"formLayout_2")
-        self.checkCH2 = QCheckBox(self.frameCH2)
-        self.checkCH2.setObjectName(u"checkCH2")
-        self.checkCH2.setStyleSheet(u"background-color: rgb(249, 240, 107);\n"
-"color: rgb(0, 0, 0);")
-
-        self.formLayout_2.setWidget(0, QFormLayout.SpanningRole, self.checkCH2)
-
-        self.labelCH2offset = QLabel(self.frameCH2)
-        self.labelCH2offset.setObjectName(u"labelCH2offset")
-
-        self.formLayout_2.setWidget(1, QFormLayout.LabelRole, self.labelCH2offset)
-
-        self.spinCH2offset = QSpinBox(self.frameCH2)
-        self.spinCH2offset.setObjectName(u"spinCH2offset")
-        self.spinCH2offset.setMinimum(-1000)
-        self.spinCH2offset.setMaximum(1000)
-        self.spinCH2offset.setSingleStep(5)
-
-        self.formLayout_2.setWidget(1, QFormLayout.FieldRole, self.spinCH2offset)
-
-        self.labelCH2scale = QLabel(self.frameCH2)
-        self.labelCH2scale.setObjectName(u"labelCH2scale")
-
-        self.formLayout_2.setWidget(2, QFormLayout.LabelRole, self.labelCH2scale)
-
-        self.spinScaleCH2 = CustomScaleSpinBox(self.frameCH2)
-        self.spinScaleCH2.setObjectName(u"spinScaleCH2")
-
-        self.formLayout_2.setWidget(2, QFormLayout.FieldRole, self.spinScaleCH2)
-
 
         self.CHVLayout.addWidget(self.frameCH2)
 
-        self.frameCH3 = QFrame(self.centralwidget)
+        self.frameCH3 = ChannelFrame(self.centralwidget)
         self.frameCH3.setObjectName(u"frameCH3")
         sizePolicy6.setHeightForWidth(self.frameCH3.sizePolicy().hasHeightForWidth())
         self.frameCH3.setSizePolicy(sizePolicy6)
         self.frameCH3.setMinimumSize(QSize(200, 0))
-        self.frameCH3.setStyleSheet(u"border-color: rgb(249, 240, 107);")
+        self.frameCH3.setStyleSheet(u"")
         self.frameCH3.setFrameShape(QFrame.Shape.NoFrame)
         self.formLayout = QFormLayout(self.frameCH3)
         self.formLayout.setObjectName(u"formLayout")
-        self.checkCH3 = QCheckBox(self.frameCH3)
-        self.checkCH3.setObjectName(u"checkCH3")
-        self.checkCH3.setStyleSheet(u"background-color: rgb(143, 240, 164);\n"
-"color: rgb(0, 0, 0);")
-
-        self.formLayout.setWidget(0, QFormLayout.SpanningRole, self.checkCH3)
-
-        self.labelCH3offset = QLabel(self.frameCH3)
-        self.labelCH3offset.setObjectName(u"labelCH3offset")
-
-        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.labelCH3offset)
-
-        self.spinCH3offset = QSpinBox(self.frameCH3)
-        self.spinCH3offset.setObjectName(u"spinCH3offset")
-        self.spinCH3offset.setMinimum(-1000)
-        self.spinCH3offset.setMaximum(1000)
-        self.spinCH3offset.setSingleStep(5)
-
-        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.spinCH3offset)
-
-        self.labelCH3scale = QLabel(self.frameCH3)
-        self.labelCH3scale.setObjectName(u"labelCH3scale")
-
-        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.labelCH3scale)
-
-        self.spinScaleCH3 = CustomScaleSpinBox(self.frameCH3)
-        self.spinScaleCH3.setObjectName(u"spinScaleCH3")
-
-        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.spinScaleCH3)
-
 
         self.CHVLayout.addWidget(self.frameCH3)
 
-        self.frameCH4 = QFrame(self.centralwidget)
+        self.frameCH4 = ChannelFrame(self.centralwidget)
         self.frameCH4.setObjectName(u"frameCH4")
         sizePolicy6.setHeightForWidth(self.frameCH4.sizePolicy().hasHeightForWidth())
         self.frameCH4.setSizePolicy(sizePolicy6)
         self.frameCH4.setMinimumSize(QSize(200, 0))
-        self.frameCH4.setStyleSheet(u"border-color: rgb(153, 193, 241);")
+        self.frameCH4.setStyleSheet(u"")
         self.frameCH4.setFrameShape(QFrame.Shape.NoFrame)
         self.formLayout_4 = QFormLayout(self.frameCH4)
         self.formLayout_4.setObjectName(u"formLayout_4")
-        self.checkCH4 = QCheckBox(self.frameCH4)
-        self.checkCH4.setObjectName(u"checkCH4")
-        self.checkCH4.setStyleSheet(u"background-color: rgb(153, 193, 241);\n"
-"color: rgb(0, 0, 0);")
-
-        self.formLayout_4.setWidget(0, QFormLayout.SpanningRole, self.checkCH4)
-
-        self.labelCH4off = QLabel(self.frameCH4)
-        self.labelCH4off.setObjectName(u"labelCH4off")
-
-        self.formLayout_4.setWidget(1, QFormLayout.LabelRole, self.labelCH4off)
-
-        self.spinCH4offset = QSpinBox(self.frameCH4)
-        self.spinCH4offset.setObjectName(u"spinCH4offset")
-        self.spinCH4offset.setMinimum(-1000)
-        self.spinCH4offset.setMaximum(1000)
-        self.spinCH4offset.setSingleStep(5)
-
-        self.formLayout_4.setWidget(1, QFormLayout.FieldRole, self.spinCH4offset)
-
-        self.labelCH4scale = QLabel(self.frameCH4)
-        self.labelCH4scale.setObjectName(u"labelCH4scale")
-
-        self.formLayout_4.setWidget(2, QFormLayout.LabelRole, self.labelCH4scale)
-
-        self.spinScaleCH4 = CustomScaleSpinBox(self.frameCH4)
-        self.spinScaleCH4.setObjectName(u"spinScaleCH4")
-
-        self.formLayout_4.setWidget(2, QFormLayout.FieldRole, self.spinScaleCH4)
-
 
         self.CHVLayout.addWidget(self.frameCH4)
 
@@ -447,7 +328,7 @@ class Ui_Bioscope(object):
         Bioscope.setCentralWidget(self.centralwidget)
         self.menuBar = QMenuBar(Bioscope)
         self.menuBar.setObjectName(u"menuBar")
-        self.menuBar.setGeometry(QRect(0, 0, 1107, 23))
+        self.menuBar.setGeometry(QRect(0, 0, 1107, 37))
         self.menuFile = QMenu(self.menuBar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuSave_as = QMenu(self.menuFile)
@@ -496,26 +377,14 @@ class Ui_Bioscope(object):
         self.labelFrequency.setText(QCoreApplication.translate("Bioscope", u"Frequency:", None))
         self.spinWavegenFreq.setSuffix(QCoreApplication.translate("Bioscope", u"Hz", None))
         self.pushRunWavegen.setText(QCoreApplication.translate("Bioscope", u"Run Wavegen", None))
-        self.checkCH1.setText(QCoreApplication.translate("Bioscope", u"Channel 1", None))
-        self.labelCH1offset.setText(QCoreApplication.translate("Bioscope", u"Offset:", None))
-        self.spinCH1offset.setSpecialValueText("")
-        self.spinCH1offset.setSuffix(QCoreApplication.translate("Bioscope", u"mV", None))
-        self.labelCH1scale.setText(QCoreApplication.translate("Bioscope", u"Scale:", None))
-        self.checkCH2.setText(QCoreApplication.translate("Bioscope", u"Channel 2", None))
-        self.labelCH2offset.setText(QCoreApplication.translate("Bioscope", u"Offset:", None))
-        self.spinCH2offset.setSpecialValueText("")
-        self.spinCH2offset.setSuffix(QCoreApplication.translate("Bioscope", u"mV", None))
-        self.labelCH2scale.setText(QCoreApplication.translate("Bioscope", u"Scale:", None))
-        self.checkCH3.setText(QCoreApplication.translate("Bioscope", u"Channel 3", None))
-        self.labelCH3offset.setText(QCoreApplication.translate("Bioscope", u"Offset:", None))
-        self.spinCH3offset.setSpecialValueText("")
-        self.spinCH3offset.setSuffix(QCoreApplication.translate("Bioscope", u"mV", None))
-        self.labelCH3scale.setText(QCoreApplication.translate("Bioscope", u"Scale:", None))
-        self.checkCH4.setText(QCoreApplication.translate("Bioscope", u"Wavegen", None))
-        self.labelCH4off.setText(QCoreApplication.translate("Bioscope", u"Offset:", None))
-        self.spinCH4offset.setSpecialValueText("")
-        self.spinCH4offset.setSuffix(QCoreApplication.translate("Bioscope", u"mV", None))
-        self.labelCH4scale.setText(QCoreApplication.translate("Bioscope", u"Scale:", None))
+        self.frameCH1.setProperty(u"channelName", QCoreApplication.translate("Bioscope", u"Channel 1", None))
+        self.frameCH1.setProperty(u"frameColor", QCoreApplication.translate("Bioscope", u"rgb(246, 97, 81)", None))
+        self.frameCH2.setProperty(u"channelName", QCoreApplication.translate("Bioscope", u"Channel 2", None))
+        self.frameCH2.setProperty(u"frameColor", QCoreApplication.translate("Bioscope", u"rgb(143, 240, 164)", None))
+        self.frameCH3.setProperty(u"channelName", QCoreApplication.translate("Bioscope", u"Channel 3", None))
+        self.frameCH3.setProperty(u"frameColor", QCoreApplication.translate("Bioscope", u"rgb(249, 240, 107)", None))
+        self.frameCH4.setProperty(u"channelName", QCoreApplication.translate("Bioscope", u"Channel 4", None))
+        self.frameCH4.setProperty(u"frameColor", QCoreApplication.translate("Bioscope", u"rgb(153, 193, 241)", None))
         self.menuFile.setTitle(QCoreApplication.translate("Bioscope", u"File", None))
         self.menuSave_as.setTitle(QCoreApplication.translate("Bioscope", u"Save as", None))
     # retranslateUi
