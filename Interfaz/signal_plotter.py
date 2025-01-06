@@ -1,70 +1,9 @@
-from PySide6 import QtWidgets, QtCore
 import pyqtgraph as pg
+from PySide6 import QtCore
 
-REFRESH_RATE = 10  # Refresh rate in milliseconds
 N_X_DIVS = 15  # Number of divisions in the x axis
 N_Y_DIVS = 10  # Number of divisions in the y axis
 X_AX_PAD = 0.3  # Padding for the x axis
-
-
-class CustomScaleSpinBox(QtWidgets.QSpinBox):
-    """
-    Custom spin box for the vertical scale
-    The effect of this scale is to define a multiplyer that resizes the signal
-    The plot's y scale is fixed to 10 divisions, from -5 to 5. The signal is then multiplied by the scale
-    """
-    def __init__(self, parent=None):
-        super(CustomScaleSpinBox, self).__init__(parent)
-        self.units = [1, 2, 5, 10]
-        self.scales = [1, 10, 100, 1000]
-        self.current_scale_index = 0
-        self.valid_values = self.get_valid_values()
-
-        self.setRange(1, 10000)
-        self.setSingleStep(1)
-
-        # Initialize value at 50 mV/div
-        self.setValue(100)
-
-    def get_valid_values(self):
-        # Generate the possible values based on units and scales
-        valid_values = [mult * scale for scale in self.scales for mult in self.units]
-        return sorted(set(valid_values))
-
-    def stepBy(self, steps):
-        current_value = self.value()
-
-        # Find the nearest valid step
-        if current_value in self.valid_values:
-            current_index = self.valid_values.index(current_value)
-        else:
-            current_index = min(range(len(self.valid_values)), key=lambda i: abs(self.valid_values[i] - current_value))
-
-        # Compute new index within valid ranges
-        new_index = current_index + steps
-        new_index = max(0, min(new_index, len(self.valid_values) - 1))
-
-        # Set new value
-        self.setValue(self.valid_values[new_index])
-
-    def textFromValue(self, value):
-        # Customize text display for "mV/div" or "V/div"
-        if value >= 1000:
-            return f"{value // 1000} V/div"
-        else:
-            return f"{value} mV/div"
-
-    def valueFromText(self, text):
-        # Extract numerical value from text
-        text = text.replace(" V/div", "").replace(" mV/div", "")
-        return float(text)
-
-    # Invert the direction of the wheel event
-    def wheelEvent(self, event):
-        inverted_delta = -event.angleDelta().y()
-        new_event = event.clone()
-        new_event.angleDelta().setY(inverted_delta)
-        super().wheelEvent(new_event)
 
 
 class SignalPlotter(pg.PlotWidget):
@@ -99,16 +38,6 @@ class SignalPlotter(pg.PlotWidget):
 
         # Set up the grid
         self.showGrid(x=True, y=True)
-
-        # Trigger level line
-        self.trigger_pen = pg.mkPen(color='cyan', style=QtCore.Qt.DashLine, width=2)
-        self.triggerLine = pg.InfiniteLine(movable=True, angle=0, pen=self.trigger_pen)
-        self.triggerLine.setCursor(QtCore.Qt.OpenHandCursor)
-        self.triggerLine.setHoverPen(pg.mkPen(color='cyan', style=QtCore.Qt.DashLine, width=3))
-
-        # Change cursor to closed hand when the line is being moved
-        self.triggerLine.sigDragged.connect(lambda: self.triggerLine.setCursor(QtCore.Qt.ClosedHandCursor))
-        self.triggerLine.sigPositionChangeFinished.connect(lambda: self.triggerLine.setCursor(QtCore.Qt.OpenHandCursor))
 
     @staticmethod
     def get_valid_time_scales():
@@ -172,19 +101,3 @@ class SignalPlotter(pg.PlotWidget):
         x_ticks_labels = [f"{i * current_scale // tick_multiplier}" for i in range(N_X_DIVS + 1)]
         x_ticks_labels[-1] = f"[{mult_str}s]"
         x_axis.setTicks([list(zip(x_ticks_pos, x_ticks_labels))])
-
-    def set_trigger_line(self):
-        # Add the line to the plot, above all other plot lines, and lock it at the top layer
-        self.addItem(self.triggerLine)
-        self.triggerLine.setZValue(10)  # Set to the highest possible z value
-
-    def remove_trigger_line(self):
-        self.removeItem(self.triggerLine)
-
-
-def main():
-    pass
-
-
-if __name__ == '__main__':
-    main()

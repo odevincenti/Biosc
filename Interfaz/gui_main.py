@@ -1,5 +1,6 @@
 import sys
 import json
+from json import JSONDecodeError
 from pyqtgraph import mkPen
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtWidgets import QApplication
@@ -27,8 +28,6 @@ class MainWindow(QMainWindow, Ui_Bioscope):
         self.pen_CH1 = mkPen(color=(255, 0, 0), width=2)
 
         # Dummy signals for testing
-        # self.dummy_signal = 100 * np.sin(2 * np.pi * 1e-4 * np.arange(MAX_SIG_LEN)) + 5 * np.random.normal(
-        #     size=MAX_SIG_LEN)
         self.dummy_signal = np.zeros(MAX_SIG_LEN)
         self.CH1_data = self.dummy_signal
         self.update_plot()
@@ -63,25 +62,21 @@ class MainWindow(QMainWindow, Ui_Bioscope):
         :return:
         """
         try:
-            command, data = message.split('-')
-        except ValueError:
+            message = json.loads(message)
+        except (JSONDecodeError, ValueError):
             print(80*'=')
-            print('SPLIT ERROR')
+            print('JSON ERROR')
             print(message)
             return
 
-        if command == Commands.MEASURED_SIGNALS:
-            try:
-                new_data = np.array(json.loads(data)[0]['signal'])
-                self.CH1_data = np.concatenate((self.CH1_data, new_data))
-                if len(self.CH1_data) > MAX_SIG_LEN:
-                    self.CH1_data = self.CH1_data[-MAX_SIG_LEN:]
-                self.update_plot()
-            except (json.JSONDecodeError, ValueError):
-                print(80*'-')
-                print('DECODING ERROR')
-                print(data)
-                print(80*'-')
+        if message["command"] == Commands.MEASURED_SIGNALS:
+            new_data = np.array(message['data'][0]['signal']) / 255
+            new_range = np.array(message['data'][0]['range']) * 1000
+            new_data = new_data * (new_range[1] - new_range[0]) + new_range[0]
+            self.CH1_data = np.concatenate((self.CH1_data, new_data))
+            if len(self.CH1_data) > MAX_SIG_LEN:
+                self.CH1_data = self.CH1_data[-MAX_SIG_LEN:]
+            self.update_plot()
 
     def update_plot(self):
         scale = self.frameCH1.spinScale.value()
@@ -90,7 +85,7 @@ class MainWindow(QMainWindow, Ui_Bioscope):
         time_scale = self.plotWidget.getViewBox().viewRange()[0]
         n_samples = int((time_scale[1] - time_scale[0]) * SAMPLING_RATE / 1_000_000) # in ms
         x_axis = np.linspace(time_scale[0], time_scale[1], n_samples)
-        plot_sig = (self.CH1_data[-len(x_axis):] + offset) / scale
+        plot_sig = (self.CH1_data[-len(x_axis):]) / scale + offset
         self.plotWidget.plot(x_axis, plot_sig, pen=self.pen_CH1)
 
     def closeEvent(self, event):
@@ -119,9 +114,6 @@ class MainWindow(QMainWindow, Ui_Bioscope):
                 self.setup_capture_xy()
 
     def setup_capture_trigger(self):
-        # Enable the trigger line
-        self.plotWidget.set_trigger_line()
-
         # Enable the trigger channel and trigger set widgets
         self.comboTriggerCH.setEnabled(True)
         self.comboTriggerSet.setEnabled(True)

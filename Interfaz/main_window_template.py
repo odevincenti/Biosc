@@ -22,7 +22,7 @@ from PySide6.QtWidgets import (QApplication, QComboBox, QFormLayout, QFrame,
     QSpinBox, QVBoxLayout, QWidget)
 
 from channel_frame import ChannelFrame
-from custom_widgets import SignalPlotter
+from signal_plotter import SignalPlotter
 
 class Ui_Bioscope(object):
     def setupUi(self, Bioscope):

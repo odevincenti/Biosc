@@ -41,7 +41,7 @@ class ESPSerial(QObject):
     def read_data(self):
         """Read data asynchronously when available."""
         while self.serial_port.canReadLine():
-            data = self.serial_port.readLine().data().decode("utf-8").strip()[:-1]
+            data = self.serial_port.readLine().data().decode("utf-8").strip()
             self.data_received.emit(data)
 
     def send_command(self, command: str, *args: str):

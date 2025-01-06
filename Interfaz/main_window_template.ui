@@ -475,8 +475,7 @@ color: rgb(0, 0, 0);</string>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">
-</string>
+             <string notr="true"/>
             </property>
             <property name="frameShape">
              <enum>QFrame::Shape::NoFrame</enum>
@@ -564,15 +563,15 @@ color: rgb(0, 0, 0);</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>SignalPlotter</class>
-   <extends>QWidget</extends>
-   <header location="global">custom_widgets</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>ChannelFrame</class>
    <extends>QFrame</extends>
    <header location="global">channel_frame</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SignalPlotter</class>
+   <extends>QWidget</extends>
+   <header>signal_plotter</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
