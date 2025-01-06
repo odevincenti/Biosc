@@ -6,8 +6,8 @@ from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Slot
 import numpy as np
 from comm_protocol import Commands
-from template_ui import Ui_Bioscope
-from qt_esp_comm import ESPSerial
+from main_window_template import Ui_Bioscope
+from qt_serial_monitor import ESPSerial
 
 PROCESS_PATH = 'comm_protocol.py'
 SAMPLING_RATE = 10_000
