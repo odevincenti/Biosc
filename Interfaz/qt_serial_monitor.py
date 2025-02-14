@@ -4,7 +4,7 @@ from PySide6.QtCore import QObject, Signal, Slot
 from PySide6.QtWidgets import QApplication
 import sys
 
-from Interfaz.comm_protocol import Commands
+from comm_protocol import Commands
 
 BAUD_RATE = 115200
 SERIAL_RECOGNIZER = "USB to UART Bridge"
